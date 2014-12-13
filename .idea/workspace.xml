@@ -39,20 +39,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LauncherGui.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="LauncherGui.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/openLauncher/LauncherGui.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="405">
-              <caret line="12" column="44" selection-start-line="12" selection-start-column="44" selection-end-line="12" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.61497325" vertical-offset="0" max-vertical-offset="570">
+              <caret line="23" column="185" selection-start-line="23" selection-start-column="185" selection-end-line="23" selection-end-column="185" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <marker date="1418420537000" expanded="true" signature="65:169" placeholder="/**...*/" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LauncherGui.form" pinned="false" current-in-tab="true">
+      <file leaf-file-name="LauncherGui.form" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/openLauncher/LauncherGui.form">
           <provider selected="true" editor-type-id="ui-designer">
             <state />
@@ -68,8 +67,8 @@
         <option value="$PROJECT_DIR$/src/openLauncher/HELLO.form" />
         <option value="$PROJECT_DIR$/src/openLauncher/HELLO.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
-        <option value="$PROJECT_DIR$/src/openLauncher/LauncherGui.java" />
         <option value="$PROJECT_DIR$/src/openLauncher/LauncherGui.form" />
+        <option value="$PROJECT_DIR$/src/openLauncher/LauncherGui.java" />
       </list>
     </option>
   </component>
@@ -175,7 +174,7 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="recentsLimit" value="5" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="303" />
+    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="419" />
     <property name="dynamic.classpath" value="false" />
     <property name="options.lastSelected" value="project.propGUI" />
     <property name="options.splitter.main.proportions" value="0.3" />
@@ -443,12 +442,12 @@
       <option name="number" value="Default" />
       <updated>1418419182645</updated>
       <workItem from="1418419185733" duration="553000" />
-      <workItem from="1418419985756" duration="649000" />
+      <workItem from="1418419985756" duration="1808000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1202000" />
+    <option name="totallyTimeSpent" value="2361000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="752" extended-state="6" />
@@ -474,7 +473,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21567044" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.02746365" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.10757576" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -519,20 +518,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/openLauncher/LauncherGui.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="405">
-          <caret line="12" column="44" selection-start-line="12" selection-start-column="44" selection-end-line="12" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <marker date="1418420537000" expanded="true" signature="65:169" placeholder="/**...*/" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/openLauncher/LauncherGui.form">
       <provider selected="true" editor-type-id="ui-designer">
         <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/openLauncher/LauncherGui.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.61497325" vertical-offset="0" max-vertical-offset="570">
+          <caret line="23" column="185" selection-start-line="23" selection-start-column="185" selection-end-line="23" selection-end-column="185" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
   </component>
