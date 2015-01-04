@@ -1,4 +1,4 @@
-package openLauncher;
+package openLauncher.launcher;
 public class Pack {
 	public String name = "name";
 	public String description = "this is a description";

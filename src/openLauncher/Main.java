@@ -1,4 +1,6 @@
-import openLauncher.LauncherGui;
+package openLauncher;
+
+import openLauncher.launcher.LauncherGui;
 
 public class Main {
 

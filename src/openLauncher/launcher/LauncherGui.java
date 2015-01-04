@@ -1,4 +1,4 @@
-package openLauncher;
+package openLauncher.launcher;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,9 +1,7 @@
-package openLauncher;
+package openLauncher.launcher;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class PacksCard extends CollapsiblePanel {
 	private static final long serialVersionUID = -2617283435728223314L;
