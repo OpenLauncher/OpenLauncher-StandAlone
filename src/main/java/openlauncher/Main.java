@@ -72,9 +72,6 @@ public class Main extends JFrame {
 		if (!workDir.exists())
 			workDir.mkdirs();
 
-		if (isWindows()) {
-			//TODO handle windows .exe -Cant do now because on mac
-		} else {
 			//We will use a jar now
 			mcExe = new File(mcDir, "MinecraftLauncher.jar");
 			if (!mcExe.exists()) {
@@ -96,7 +93,6 @@ public class Main extends JFrame {
 					e.printStackTrace();
 					System.exit(-1);
 				}
-			}
 
 			addToClasspath(mcExe);
 
