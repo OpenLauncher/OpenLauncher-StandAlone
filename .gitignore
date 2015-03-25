@@ -17,4 +17,4 @@ OpenLauncher-StandAlone.iml
 OpenLauncher-StandAlone.iml
 
 .gradle/
-OpenLauncher/
+OpenLauncher/*
