@@ -15,3 +15,6 @@ hs_err_pid*
 OpenLauncher-StandAlone.iml
 
 OpenLauncher-StandAlone.iml
+
+.gradle/
+OpenLauncher/
