@@ -6,19 +6,17 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 
 public class Main extends JFrame {
 
@@ -26,7 +24,10 @@ public class Main extends JFrame {
 	static File mcExe;
 	static File mcLauncher;
 	static File workDir;
+	static File forgeDir;
 	static String instaceName = "test";
+	static String forgeVersion = "10.13.2.1342";
+	static String minecraftVersion = "1.7.10";
 
 	public JTextArea textArea;
 	public JScrollPane scrollPane;
@@ -43,7 +44,7 @@ public class Main extends JFrame {
 		this.textArea.setLineWrap(true);
 		this.textArea.setEditable(false);
 		this.textArea.setFont(MONOSPACED);
-		((DefaultCaret)this.textArea.getCaret()).setUpdatePolicy(1);
+		((DefaultCaret) this.textArea.getCaret()).setUpdatePolicy(1);
 
 		this.scrollPane = new JScrollPane(this.textArea);
 		this.scrollPane.setBorder(null);
@@ -56,7 +57,7 @@ public class Main extends JFrame {
 		println("Starting the openLauncher");
 	}
 
-	public void start(){
+	public void start() {
 		println(getHome().getAbsolutePath());
 
 		if (!getHome().exists()) {
@@ -72,69 +73,85 @@ public class Main extends JFrame {
 		if (!workDir.exists())
 			workDir.mkdirs();
 
-			//We will use a jar now
-			mcExe = new File(mcDir, "MinecraftLauncher.jar");
-			if (!mcExe.exists()) {
-				//We need to download the minecraft jar file
-				println("Downloading the minecraft launcher bootstrap...");
-				try {
-					URL website = new URL("https://s3.amazonaws.com/Minecraft.Download/launcher/Minecraft.jar");
-					ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-					FileOutputStream fos = new FileOutputStream(mcExe);
-					fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-					println("Minecraft bootstrap downloaded successfully!");
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-					System.exit(-1);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-					System.exit(-1);
-				} catch (IOException e) {
-					e.printStackTrace();
-					System.exit(-1);
-				}
+		forgeDir = new File(getHome().getAbsoluteFile() + "/", "forge");
+		if (!forgeDir.exists())
+			forgeDir.mkdirs();
 
-			addToClasspath(mcExe);
-
-			mcBootstrap.downloadLauncher(this);
-
-			mcLauncher = new File(mcDir, "launcher.jar");
-
-			addToClasspath(mcLauncher);
-
+		//We will use a jar now
+		mcExe = new File(mcDir, "MinecraftLauncher.jar");
+		if (!mcExe.exists()) {
+			//We need to download the minecraft jar file
+			println("Downloading the minecraft launcher bootstrap...");
 			try {
-				profileCreator.createProfile(mcDir, "1.6.4", "testing");
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				System.exit(-1);
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-				System.exit(-1);
-			}
-
-			try {
-				Process proc = Runtime.getRuntime().exec("java -jar " + mcExe.getAbsolutePath() + " -workDir " + mcDir.getAbsolutePath());
-				proc.waitFor();
-				// Then retreive the process output
-				InputStream in = proc.getInputStream();
-				InputStream err = proc.getErrorStream();
-
-				byte b[] = new byte[in.available()];
-				in.read(b, 0, b.length);
-				println(new String(b));
-
-				byte c[] = new byte[err.available()];
-				err.read(c, 0, c.length);
-				println(new String(c));
+				DownloadUtils.downloadFile("https://s3.amazonaws.com/Minecraft.Download/launcher/Minecraft.jar", mcDir, "MinecraftLauncher.jar");
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(-1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				System.exit(-1);
 			}
+		}
+		addToClasspath(mcExe);
 
+		mcBootstrap.downloadLauncher(this);
 
+		mcLauncher = new File(mcDir, "launcher.jar");
+
+		addToClasspath(mcLauncher);
+
+		println("Creating the custom profiles");
+
+		try {
+			if (forgeVersion != "") {
+				profileCreator.createProfile(mcDir, minecraftVersion + "-Forge" + forgeVersion + "-" + minecraftVersion, instaceName, workDir);
+			} else {
+				profileCreator.createProfile(mcDir, minecraftVersion, instaceName, workDir);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+
+		if (forgeVersion != "") {
+			File mcverDir = new File(mcDir, "versions/" + minecraftVersion);
+			if (!mcverDir.exists()) {
+				println("Downloading minecraft");
+				MinecraftVersionInstaller.installMc(minecraftVersion, this);
+			}
+			println("Using forge");
+			File forgeInstaller = new File(forgeDir, "forge-" + minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion + "-installer.jar");
+			File forgeInstallLocation = new File(mcDir, "versions/" + minecraftVersion + "-Forge" + forgeVersion + "-" + minecraftVersion);
+			if (forgeInstaller.exists() && !(forgeInstallLocation.exists())) {
+				addToClasspath(forgeInstaller);
+				println("Installing forge");
+				ForgeInstaller.installForge(mcDir);
+			}
+		}
+
+		println("Starting the minecraft launcher");
+
+		try {
+			Process proc = Runtime.getRuntime().exec("java -jar " + mcExe.getAbsolutePath() + " -workDir " + mcDir.getAbsolutePath());
+			InputStream stdin = proc.getInputStream();
+			InputStreamReader isr = new InputStreamReader(stdin);
+			BufferedReader br = new BufferedReader(isr);
+
+			String line = null;
+			println("<MINECRAFT>");
+
+			while ((line = br.readLine()) != null)
+				println(line);
+
+			println("</MINECRAFT>");
+			int exitVal = proc.waitFor();
+			println("Process exitValue: " + exitVal);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			System.exit(-1);
 		}
 	}
 
@@ -221,11 +238,9 @@ public class Main extends JFrame {
 		final JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
 
 		boolean shouldScroll = scrollBar.getValue() + scrollBar.getSize().getHeight() + MONOSPACED.getSize() * 2 > scrollBar.getMaximum();
-		try
-		{
+		try {
 			document.insertString(document.getLength(), string, null);
-		}
-		catch (BadLocationException ignored) {
+		} catch (BadLocationException ignored) {
 		}
 		if (shouldScroll)
 			SwingUtilities.invokeLater(new Runnable() {

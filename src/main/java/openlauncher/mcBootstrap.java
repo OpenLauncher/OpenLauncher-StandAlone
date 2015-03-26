@@ -15,11 +15,11 @@ public class mcBootstrap {
 
 	public static void downloadLauncher(Main main) {
 		List<String> list = new ArrayList<String>();
-		Bootstrap bootstrap = new Bootstrap(Main.mcDir, Proxy.NO_PROXY, null, (String[]) list.toArray(new String[list.size()]));
+		Bootstrap bootstrap = new customBootstrap(Main.mcDir, Proxy.NO_PROXY, null, (String[]) list.toArray(new String[list.size()]), main);
 		bootstrap.setVisible(false);
 		File packedLauncherJar = new File(Main.mcDir, "launcher.pack.lzma");
 		File packedLauncherJarNew = new File(Main.mcDir, "launcher.pack.lzma.new");
-		Boolean force = true;
+		Boolean force = false;
 		if (packedLauncherJarNew.isFile()) {
 			main.println("Found cached update");
 			bootstrap.renameNew();
@@ -41,8 +41,7 @@ public class mcBootstrap {
 			Thread thread = new Thread(new Downloader(controller, bootstrap, Proxy.NO_PROXY, md5, packedLauncherJarNew));
 			thread.setName("Launcher downloader");
 			thread.start();
-			try
-			{
+			try {
 				main.println("Looking for update");
 				boolean wasInTime = controller.foundUpdateLatch.await(3L, TimeUnit.SECONDS);
 

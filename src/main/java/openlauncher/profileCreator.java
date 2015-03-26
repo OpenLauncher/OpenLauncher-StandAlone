@@ -17,12 +17,12 @@ import java.util.List;
 
 public class profileCreator {
 
-	public static void createProfile(File mcDir, String version, String name) throws FileNotFoundException, UnsupportedEncodingException {
+	public static void createProfile(File mcDir, String version, String name, File instanceDir) throws FileNotFoundException, UnsupportedEncodingException {
 		File json = new File(mcDir, "launcher_profiles.json");
 		if (json.exists()) {
 			JFrame frame = new JFrame();
 			List<String> list = new ArrayList<String>();
-		//TODO calling this starts the gui for the launcher
+			//TODO calling this starts the gui for the launcher
 			Launcher launcher = new FakeMCLauncher(frame, Main.workDir, Proxy.NO_PROXY, (PasswordAuthentication) null, (String[]) list.toArray(new String[list.size()]), Integer.valueOf(100));
 			ProfileManager manager = launcher.getProfileManager();
 			try {
@@ -36,7 +36,7 @@ public class profileCreator {
 			} else {
 				Profile profile = new Profile();
 				profile.setName(name);
-				profile.setGameDir(mcDir);
+				profile.setGameDir(instanceDir);
 				profile.setLastVersionId(version);
 				manager.getProfiles().put(name, profile);
 				System.out.println("added a new profile!");
@@ -51,7 +51,7 @@ public class profileCreator {
 				e.printStackTrace();
 			}
 
-		System.out.println("Saved");
+			System.out.println("Saved");
 
 		} else {
 			PrintWriter writer = new PrintWriter(json, "UTF-8");
