@@ -1,9 +1,10 @@
 package openlauncher;
 
 
+import openlauncher.gui.LauncherForm;
+
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 import java.awt.*;
 import java.io.BufferedReader;
@@ -18,46 +19,28 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-public class Main extends JFrame {
+public class Main{
 
 	static File mcDir;
 	static File mcExe;
 	static File mcLauncher;
 	static File workDir;
 	static File forgeDir;
-	static String instaceName = "test";
-	static String forgeVersion = "10.13.2.1342";
-	static String minecraftVersion = "1.7.10";
+	String instanceName;
+	String forgeVersion;
+	String minecraftVersion;
 
-	public JTextArea textArea;
-	public JScrollPane scrollPane;
 	private final Font MONOSPACED = new Font("Monospaced", 0, 12);
 	private StringBuilder outputBuffer = new StringBuilder();
 
+	public void launch(String instaceName, String forgeVersion, String minecraftVersion) {
+		this.instanceName = instaceName;
+		this.forgeVersion = forgeVersion;
+		this.minecraftVersion = minecraftVersion;
 
-	public Main() throws HeadlessException {
-		super("OpenLauncher");
-		setSize(854, 480);
-		setDefaultCloseOperation(3);
+		println("Starting " + instaceName);
+		Launch.form.progressBar1.setValue(1);
 
-		this.textArea = new JTextArea();
-		this.textArea.setLineWrap(true);
-		this.textArea.setEditable(false);
-		this.textArea.setFont(MONOSPACED);
-		((DefaultCaret) this.textArea.getCaret()).setUpdatePolicy(1);
-
-		this.scrollPane = new JScrollPane(this.textArea);
-		this.scrollPane.setBorder(null);
-		this.scrollPane.setVerticalScrollBarPolicy(22);
-
-		add(this.scrollPane);
-		setLocationRelativeTo(null);
-		setVisible(true);
-
-		println("Starting the openLauncher");
-	}
-
-	public void start() {
 		println(getHome().getAbsolutePath());
 
 		if (!getHome().exists()) {
@@ -76,6 +59,7 @@ public class Main extends JFrame {
 		forgeDir = new File(getHome().getAbsoluteFile() + "/", "forge");
 		if (!forgeDir.exists())
 			forgeDir.mkdirs();
+		Launch.form.progressBar1.setValue(2);
 
 		//We will use a jar now
 		mcExe = new File(mcDir, "MinecraftLauncher.jar");
@@ -89,9 +73,13 @@ public class Main extends JFrame {
 				System.exit(-1);
 			}
 		}
+
+		Launch.form.progressBar1.setValue(3);
 		addToClasspath(mcExe);
 
 		mcBootstrap.downloadLauncher(this);
+
+		Launch.form.progressBar1.setValue(4);
 
 		mcLauncher = new File(mcDir, "launcher.jar");
 
@@ -113,12 +101,15 @@ public class Main extends JFrame {
 			System.exit(-1);
 		}
 
+		Launch.form.progressBar1.setValue(5);
+
 		if (forgeVersion != "") {
 			File mcverDir = new File(mcDir, "versions/" + minecraftVersion);
 			if (!mcverDir.exists()) {
 				println("Downloading minecraft");
 				MinecraftVersionInstaller.installMc(minecraftVersion, this);
 			}
+			Launch.form.progressBar1.setValue(6);
 			println("Using forge");
 			File forgeInstaller = new File(forgeDir, "forge-" + minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion + "-installer.jar");
 			File forgeInstallLocation = new File(mcDir, "versions/" + minecraftVersion + "-Forge" + forgeVersion + "-" + minecraftVersion);
@@ -130,6 +121,7 @@ public class Main extends JFrame {
 		}
 
 		println("Starting the minecraft launcher");
+		Launch.form.progressBar1.setValue(7);
 
 		try {
 			Process proc = Runtime.getRuntime().exec("java -jar " + mcExe.getAbsolutePath() + " -workDir " + mcDir.getAbsolutePath());
@@ -234,8 +226,10 @@ public class Main extends JFrame {
 
 		outputBuffer.append(string);
 
-		Document document = textArea.getDocument();
-		final JScrollBar scrollBar = scrollPane.getVerticalScrollBar();
+		//Launch.form.textLog.append(string);
+
+		Document document = Launch.form.textLog.getDocument();
+		final JScrollBar scrollBar = Launch.form.scrollBar1;
 
 		boolean shouldScroll = scrollBar.getValue() + scrollBar.getSize().getHeight() + MONOSPACED.getSize() * 2 > scrollBar.getMaximum();
 		try {
