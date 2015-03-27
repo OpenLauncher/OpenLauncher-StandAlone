@@ -1,6 +1,7 @@
 package openlauncher;
 
 
+
 import openlauncher.gui.LauncherForm;
 
 import javax.swing.*;
@@ -10,14 +11,19 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLDecoder;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 
 public class Main{
 
@@ -26,12 +32,18 @@ public class Main{
 	static File mcLauncher;
 	static File workDir;
 	static File forgeDir;
+	static File libsDir;
 	String instanceName;
 	String forgeVersion;
 	String minecraftVersion;
 
 	private final Font MONOSPACED = new Font("Monospaced", 0, 12);
 	private StringBuilder outputBuffer = new StringBuilder();
+
+	public void start(LauncherForm form){
+		Launch.form = form;
+		println("Starting the openLauncher");
+	}
 
 	public void launch(String instaceName, String forgeVersion, String minecraftVersion) {
 		this.instanceName = instaceName;
@@ -40,6 +52,7 @@ public class Main{
 
 		println("Starting " + instaceName);
 		Launch.form.progressBar1.setValue(1);
+
 
 		println(getHome().getAbsolutePath());
 
@@ -59,6 +72,31 @@ public class Main{
 		forgeDir = new File(getHome().getAbsoluteFile() + "/", "forge");
 		if (!forgeDir.exists())
 			forgeDir.mkdirs();
+
+		libsDir = new File(getHome().getAbsoluteFile() + "/", "libs");
+		if(!libsDir.exists())
+			libsDir.mkdirs();
+
+
+		File commons = new File(libsDir, "commons-io-2.4.jar");
+		if(!commons.exists()){
+			print("Downloading Commons-io");
+			try{
+				URL website = new URL("http://central.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar");
+				ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+				FileOutputStream fos = new FileOutputStream(commons);
+				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+			} catch (MalformedURLException e){
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		addToClasspath(commons);
+
 		Launch.form.progressBar1.setValue(2);
 
 		//We will use a jar now
@@ -112,9 +150,16 @@ public class Main{
 			Launch.form.progressBar1.setValue(6);
 			println("Using forge");
 			File forgeInstaller = new File(forgeDir, "forge-" + minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion + "-installer.jar");
+			if(!forgeInstaller.exists()){
+				try {
+					DownloadUtils.downloadFile("http://files.minecraftforge.net/maven/net/minecraftforge/forge/" + minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion + "/forge-" + minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion + "-installer.jar", forgeDir, forgeInstaller.getName());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			addToClasspath(forgeInstaller);
 			File forgeInstallLocation = new File(mcDir, "versions/" + minecraftVersion + "-Forge" + forgeVersion + "-" + minecraftVersion);
 			if (forgeInstaller.exists() && !(forgeInstallLocation.exists())) {
-				addToClasspath(forgeInstaller);
 				println("Installing forge");
 				ForgeInstaller.installForge(mcDir);
 			}
@@ -231,16 +276,16 @@ public class Main{
 		Document document = Launch.form.textLog.getDocument();
 		final JScrollBar scrollBar = Launch.form.scrollBar1;
 
-		boolean shouldScroll = scrollBar.getValue() + scrollBar.getSize().getHeight() + MONOSPACED.getSize() * 2 > scrollBar.getMaximum();
+		//boolean shouldScroll = scrollBar.getValue() + scrollBar.getSize().getHeight() + MONOSPACED.getSize() * 2 > scrollBar.getMaximum();
 		try {
 			document.insertString(document.getLength(), string, null);
 		} catch (BadLocationException ignored) {
 		}
-		if (shouldScroll)
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					scrollBar.setValue(2147483647);
-				}
-			});
+//		if (shouldScroll)
+//			SwingUtilities.invokeLater(new Runnable() {
+//				public void run() {
+//					scrollBar.setValue(2147483647);
+//				}
+//			});
 	}
 }

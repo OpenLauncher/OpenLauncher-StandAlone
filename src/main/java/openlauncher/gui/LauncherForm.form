@@ -60,7 +60,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="d0dfd" class="javax.swing.JTextArea" binding="textLog" custom-create="true">
+          <component id="d0dfd" class="javax.swing.JTextArea" binding="textLog">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="50"/>
@@ -68,6 +68,7 @@
             </constraints>
             <properties>
               <editable value="false"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="e29ba" class="javax.swing.JProgressBar" binding="progressBar1" default-binding="true">

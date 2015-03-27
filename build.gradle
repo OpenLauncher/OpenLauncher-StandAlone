@@ -1,14 +1,71 @@
+apply plugin: 'maven'
 apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
 
-sourceCompatibility = 1.5
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+group = 'openlauncher'
+archivesBaseName = 'OpenLauncher'
 version = '1.0'
+targetCompatibility = '1.6'
+sourceCompatibility = '1.6'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://libraries.minecraft.net/"
+    }
+}
+
+configurations {
+    // configuration that holds jars to copy into lib
+    extraLibs
+}
+dependencies {
+    extraLibs 'commons-io:commons-io:2.4'
+    extraLibs 'com.google.code.gson:gson:2.2.4'
+    extraLibs 'com.intellij:forms_rt:7.0.3'
 }
 
 dependencies {
-    compile 'commons-io:commons-io:2.4'
-    compile 'com.google.code.gson:gson:2.2.4'
+    runtime 'commons-io:commons-io:2.4'
+    runtime 'com.google.code.gson:gson:2.2.4'
+    compile 'com.intellij:forms_rt:7.0.3'
+    compile fileTree(dir: 'libs', include: '*.jar')
+   // providedCompile 'libs/forge-1.7.10-10.13.2.1342-1.7.10-installer.jar'
+   // providedCompile 'libs/launcher.jar'
+   // providedCompile 'libs/MinecraftLauncher.jar'
     testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+
+
+jar {
+    classifier = 'thin'
+    exclude 'cpw/**'
+    exclude 'net/minecraft/**'
+    exclude 'com/mojang/**'
+    exclude 'install_profile.json'
+    manifest { attributes 'Main-Class': 'openlauncher.Launch' }
+    into('lib') {
+        from configurations.extraLibs
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.6'
 }
