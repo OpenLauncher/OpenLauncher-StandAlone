@@ -5,15 +5,15 @@ public class ModPackInstance {
 	String instanceName;
 	String forgeVersion;
 	String minecraftVersion;
-	String text;
 	String version;
+	String type;
 
-	public ModPackInstance(String instanceName, String forgeVersion, String minecraftVersion, String version, String info) {
+	public ModPackInstance(String instanceName, String forgeVersion, String minecraftVersion, String version, String type) {
 		this.instanceName = instanceName;
 		this.forgeVersion = forgeVersion;
 		this.minecraftVersion = minecraftVersion;
 		this.version = version;
-		this.text = info;
+		this.type = type;
 	}
 
 	public String getInstanceName() {
@@ -40,19 +40,19 @@ public class ModPackInstance {
 		this.minecraftVersion = minecraftVersion;
 	}
 
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
 	public String getVersion() {
 		return version;
 	}
 
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

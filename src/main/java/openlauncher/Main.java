@@ -1,7 +1,6 @@
 package openlauncher;
 
 
-
 import openlauncher.gui.LauncherForm;
 
 import javax.swing.*;
@@ -21,7 +20,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.URLDecoder;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
@@ -66,6 +64,7 @@ public class Main{
 		}
 		addToClasspath(commons);
 
+		//TODO add a way to load the mod packs from the old launcher
 		File packsJson = new File(getHome(), "packs.json");
 		try {
 			println("Downloading the pack list");
@@ -288,6 +287,8 @@ public class Main{
 		outputBuffer.append(string);
 
 		//Launch.form.textLog.append(string);
+		if(Launch.form == null)
+			return;
 
 		Document document = Launch.form.textLog.getDocument();
 		final JScrollBar scrollBar = Launch.form.scrollBar1;

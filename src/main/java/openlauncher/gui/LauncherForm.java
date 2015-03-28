@@ -4,13 +4,17 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import openlauncher.Launch;
-import openlauncher.ModPackInstance;
+import openlauncher.ModPack;
+import openlauncher.ModPackInstaller;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class LauncherForm {
 	public JPanel panel1;
@@ -20,6 +24,7 @@ public class LauncherForm {
 	public JTextArea textLog;
 	public JScrollBar scrollBar1;
 	public static DefaultListModel packListString = new DefaultListModel();
+	public static String selectedString = "";
 
 	private final Font MONOSPACED = new Font("Monospaced", 0, 12);
 
@@ -31,28 +36,38 @@ public class LauncherForm {
 				public void actionPerformed(ActionEvent e) {
 					Thread thread = new Thread() {
 						public void run() {
-							if (!packList.isSelectionEmpty()) {
-								//ModPackInstance pack = Launch.packMap.get(packList.getSelectedValue());
-								//Launch.main.launch(pack.getInstanceName(), pack.getForgeVersion(), pack.getMinecraftVersion());
-								//launchModPackButton.setEnabled(false);
+
+							if (!selectedString.equals("")) {
+								ModPack pack = null;
+								for (ModPack modPack : Launch.modPacks) {
+									if (modPack.getInstanceName().equals(selectedString)) {
+										pack = modPack;
+									}
+								}
+								launchModPackButton.setEnabled(false);
+								try {
+									new ModPackInstaller().playPack(pack);
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
 							}
 						}
 					};
 					thread.start();
 				}
 			});
-//		packList.addPropertyChangeListener(new PropertyChangeListener() {
-//			@Override
-//			public void propertyChange(PropertyChangeEvent evt) {
-//				if(!packList.isSelectionEmpty()) {
-//					ModPack pack = Launch.packMap.get(packList.getSelectedValue());
-//					textLog.setText(pack.getText());
-//				} else {
-//					textLog.setText("Please choose a pack on the left to play");
-//				}
-//			}
-//		});
 		Launch.form = this;
+
+		packList.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if (!e.getValueIsAdjusting()) {
+					JList source = (JList) e.getSource();
+					String selected = source.getSelectedValue().toString();
+					selectedString = selected;
+				}
+			}
+		});
 	}
 
 
@@ -66,6 +81,7 @@ public class LauncherForm {
 		textLog.setFont(MONOSPACED);
 		((DefaultCaret) textLog.getCaret()).setUpdatePolicy(1);
 
+		//TODO make this also print out to the console
 //		PrintStream out = new PrintStream(new TextAreaOutputStream(textLog));
 //		System.setOut(out);
 //		System.setErr(out);
