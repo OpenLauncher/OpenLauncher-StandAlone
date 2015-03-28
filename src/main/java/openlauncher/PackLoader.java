@@ -31,7 +31,6 @@ public class PackLoader {
 	public PackLoader(Main main) {
 		this.jsonFile = new File(main.getHome(), "packs.json");
 		GsonBuilder builder = new GsonBuilder();
-		//builder.registerTypeAdapter(PackLoader.RawPackList.class, new PackLoader.RawPackList.Serializer(main));
 		builder.setPrettyPrinting();
 		this.gson = builder.create();
 		this.main = main;
@@ -52,20 +51,6 @@ public class PackLoader {
 			it.remove(); // avoids a ConcurrentModificationException
 		}
 		form.packList.repaint();
-	}
-
-	public void savePacks() throws IOException {
-		PackLoader.RawPackList rawPackList = new PackLoader.RawPackList(Launch.packMap);
-		FileUtils.writeStringToFile(this.jsonFile, this.gson.toJson(jsonFile));
-	}
-
-	private static class RawPackList {
-		public Map<String, ModPack> packs;
-
-		public RawPackList(Map<String, ModPack> packs) {
-			packs = new HashMap<String, ModPack>();
-			this.packs = packs;
-		}
 	}
 }
 
