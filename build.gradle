@@ -11,7 +11,7 @@ buildscript {
 
 group = 'openlauncher'
 archivesBaseName = 'OpenLauncher'
-version = '1.0'
+version = 'forge_dev_test'
 targetCompatibility = '1.6'
 sourceCompatibility = '1.6'
 
@@ -52,10 +52,8 @@ artifacts {
     archives sourcesJar
 }
 
-
-
 jar {
-    classifier = 'thin'
+    classifier = 'main'
     exclude 'cpw/**'
     exclude 'net/minecraft/**'
     exclude 'com/mojang/**'

@@ -1,0 +1,14 @@
+{
+  "packs":{
+    "testing":{
+      "instanceName" : "testing",
+      "text" : "This is a testing pack",
+      "jsonLocation" : "the internet"
+    },
+    "phe0nix":{
+      "instanceName" : "phe0nix",
+      "text" : "This is a testing pack",
+      "jsonLocation" : "the internet"
+    }
+  }
+}

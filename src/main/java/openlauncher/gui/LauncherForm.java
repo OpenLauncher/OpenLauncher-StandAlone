@@ -4,14 +4,13 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import openlauncher.Launch;
-import openlauncher.ModPack;
+import openlauncher.ModPackInstance;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.PrintStream;
 
 public class LauncherForm {
 	public JPanel panel1;
@@ -20,6 +19,7 @@ public class LauncherForm {
 	public JList packList;
 	public JTextArea textLog;
 	public JScrollBar scrollBar1;
+	public static DefaultListModel packListString = new DefaultListModel();
 
 	private final Font MONOSPACED = new Font("Monospaced", 0, 12);
 
@@ -32,9 +32,9 @@ public class LauncherForm {
 					Thread thread = new Thread() {
 						public void run() {
 							if (!packList.isSelectionEmpty()) {
-								ModPack pack = Launch.packMap.get(packList.getSelectedValue());
-								Launch.main.launch(pack.getInstanceName(), pack.getForgeVersion(), pack.getMinecraftVersion());
-								launchModPackButton.setEnabled(false);
+								//ModPackInstance pack = Launch.packMap.get(packList.getSelectedValue());
+								//Launch.main.launch(pack.getInstanceName(), pack.getForgeVersion(), pack.getMinecraftVersion());
+								//launchModPackButton.setEnabled(false);
 							}
 						}
 					};
@@ -74,16 +74,12 @@ public class LauncherForm {
 		frame.pack();
 		frame.setVisible(true);
 		Launch.form = this;
-		Launch.main.start(this);
 	}
 
 	private void createUIComponents() {
-		packList = new JList(Launch.packMap.keySet().toArray());
-		//textLog = new JTextArea();
-
-
 		Launch.form = this;
-		packList = new JList(Launch.packMap.keySet().toArray());
+		//packList = new JList(Launch.packMap.keySet().toArray());
+		packList = new JList(packListString);
 		packList.setSelectedIndex(0);
 	}
 
@@ -115,7 +111,7 @@ public class LauncherForm {
 		panel2.add(packList, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
 		textLog = new JTextArea();
 		textLog.setEditable(false);
-		textLog.setText("Hello");
+		textLog.setText("");
 		panel2.add(textLog, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
 		progressBar1 = new JProgressBar();
 		progressBar1.setMaximum(8);

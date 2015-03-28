@@ -22,7 +22,6 @@ public class profileCreator {
 		if (json.exists()) {
 			JFrame frame = new JFrame();
 			List<String> list = new ArrayList<String>();
-			//TODO calling this starts the gui for the launcher
 			Launcher launcher = new FakeMCLauncher(frame, Main.workDir, Proxy.NO_PROXY, (PasswordAuthentication) null, (String[]) list.toArray(new String[list.size()]), Integer.valueOf(100));
 			ProfileManager manager = launcher.getProfileManager();
 			try {

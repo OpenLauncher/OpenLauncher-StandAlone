@@ -43,6 +43,46 @@ public class Main{
 	public void start(LauncherForm form){
 		Launch.form = form;
 		println("Starting the openLauncher");
+
+		libsDir = new File(getHome().getAbsoluteFile() + "/", "libs");
+		if(!libsDir.exists())
+			libsDir.mkdirs();
+
+		File commons = new File(libsDir, "commons-io-2.4.jar");
+		if(!commons.exists()){
+			print("Downloading Commons-io");
+			try{
+				URL website = new URL("http://central.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar");
+				ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+				FileOutputStream fos = new FileOutputStream(commons);
+				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+			} catch (MalformedURLException e){
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		addToClasspath(commons);
+
+		File packsJson = new File(getHome(), "packs.json");
+		try {
+			println("Downloading the pack list");
+			DownloadUtils.downloadFile("http://modmuss50.me/files/packs.json", getHome(), "packs.json");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if(packsJson.exists()){
+			try {
+				println("Reading the pack list");
+				new PackLoader(this).loadPacks(form);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	public void launch(String instaceName, String forgeVersion, String minecraftVersion) {
@@ -72,30 +112,6 @@ public class Main{
 		forgeDir = new File(getHome().getAbsoluteFile() + "/", "forge");
 		if (!forgeDir.exists())
 			forgeDir.mkdirs();
-
-		libsDir = new File(getHome().getAbsoluteFile() + "/", "libs");
-		if(!libsDir.exists())
-			libsDir.mkdirs();
-
-
-		File commons = new File(libsDir, "commons-io-2.4.jar");
-		if(!commons.exists()){
-			print("Downloading Commons-io");
-			try{
-				URL website = new URL("http://central.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar");
-				ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-				FileOutputStream fos = new FileOutputStream(commons);
-				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-			} catch (MalformedURLException e){
-				e.printStackTrace();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		addToClasspath(commons);
 
 		Launch.form.progressBar1.setValue(2);
 
@@ -276,16 +292,16 @@ public class Main{
 		Document document = Launch.form.textLog.getDocument();
 		final JScrollBar scrollBar = Launch.form.scrollBar1;
 
-		//boolean shouldScroll = scrollBar.getValue() + scrollBar.getSize().getHeight() + MONOSPACED.getSize() * 2 > scrollBar.getMaximum();
+		boolean shouldScroll = scrollBar.getValue() + scrollBar.getSize().getHeight() + MONOSPACED.getSize() * 2 > scrollBar.getMaximum();
 		try {
 			document.insertString(document.getLength(), string, null);
 		} catch (BadLocationException ignored) {
 		}
-//		if (shouldScroll)
-//			SwingUtilities.invokeLater(new Runnable() {
-//				public void run() {
-//					scrollBar.setValue(2147483647);
-//				}
-//			});
+		if (shouldScroll)
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					scrollBar.setValue(2147483647);
+				}
+			});
 	}
 }
