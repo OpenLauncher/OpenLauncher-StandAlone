@@ -37,7 +37,11 @@ public class ModPackInstaller {
 		if (!packFolder.exists()) {
 			packFolder.mkdirs();
 		}
-		DownloadUtils.downloadFile(pack.getJsonLocation(), packFolder, pack.getInstanceName() + ".json");
+		if (pack.getInstanceName().equals("ATLPACK")) {
+			//TODO convert to the new pack json format
+		} else {
+			DownloadUtils.downloadFile(pack.getJsonLocation(), packFolder, pack.getInstanceName() + ".json");
+		}
 		instances = getInstances(new File(packFolder, pack.getInstanceName() + ".json"));
 		VersionSelection.versionList.clear();
 		for (ModPackInstance instance : instances) {
@@ -68,7 +72,7 @@ public class ModPackInstaller {
 		if (!isInstalled()) {
 			if (instance.type.equals("zip")) {
 				new ZipPackType().checkMods(instance);
-			} else if (instance.type.equals("legacy")){
+			} else if (instance.type.equals("legacy")) {
 				new LegacyType().checkMods(instance);
 			}
 			ModPackInstance installedInstance = new ModPackInstance(instance.instanceName, instance.forgeVersion, instance.minecraftVersion, instance.version, instance.type, instance.typeDownloadURL);
@@ -95,7 +99,7 @@ public class ModPackInstaller {
 		if (!new File(packFolder, "instance.json").exists()) {
 			return false;
 		}
-		if(instances.size() == 1){
+		if (instances.size() == 1) {
 			return true;
 		}
 		Gson gson = new Gson();

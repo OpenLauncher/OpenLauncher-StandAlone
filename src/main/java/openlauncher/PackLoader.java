@@ -6,6 +6,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import openlauncher.gui.LauncherForm;
+import openlauncher.legacyATL.ATLPack;
+import openlauncher.legacyATL.ATLPackHelper;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -45,6 +47,18 @@ public class PackLoader {
 			Launch.modPacks.add((ModPack) pair.getValue());
 			it.remove(); // avoids a ConcurrentModificationException
 		}
+
+		ATLPackHelper atlPackHelper = new ATLPackHelper();
+		atlPackHelper.loadPacks();
+		for (ATLPack atlPack : atlPackHelper.packs) {
+			ModPack modPack = new ModPack();
+			modPack.setInstanceName(atlPack.getName());
+			modPack.setJsonLocation("ATLPACK");
+			modPack.setText(atlPack.getDescription());
+			LauncherForm.packListString.addElement(modPack.getInstanceName());
+			Launch.modPacks.add(modPack);
+		}
+
 //		form.packList.repaint();
 	}
 }

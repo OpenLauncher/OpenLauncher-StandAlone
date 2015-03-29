@@ -4,7 +4,6 @@ public class ModPack {
 	String instanceName;
 	String text;
 	String jsonLocation;
-	String name;
 
 	public String getInstanceName() {
 		return instanceName;
