@@ -23,7 +23,7 @@ import java.net.URLClassLoader;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-public class Main{
+public class Main {
 
 	static File mcDir;
 	static File mcExe;
@@ -38,23 +38,23 @@ public class Main{
 	private final Font MONOSPACED = new Font("Monospaced", 0, 12);
 	private StringBuilder outputBuffer = new StringBuilder();
 
-	public void start(LauncherForm form){
+	public void start(LauncherForm form) {
 		Launch.form = form;
 		println("Starting the openLauncher");
 
 		libsDir = new File(getHome().getAbsoluteFile() + "/", "libs");
-		if(!libsDir.exists())
+		if (!libsDir.exists())
 			libsDir.mkdirs();
 
 		File commons = new File(libsDir, "commons-io-2.4.jar");
-		if(!commons.exists()){
+		if (!commons.exists()) {
 			print("Downloading Commons-io");
-			try{
+			try {
 				URL website = new URL("http://central.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar");
 				ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 				FileOutputStream fos = new FileOutputStream(commons);
 				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-			} catch (MalformedURLException e){
+			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -65,14 +65,14 @@ public class Main{
 		addToClasspath(commons);
 
 		File javaJson = new File(libsDir, "javax.json-1.0.4.jar");
-		if(!javaJson.exists()){
+		if (!javaJson.exists()) {
 			print("Downloading javax.json-1.0.4.jar");
-			try{
+			try {
 				URL website = new URL("http://search.maven.org/remotecontent?filepath=org/glassfish/javax.json/1.0.4/javax.json-1.0.4.jar");
 				ReadableByteChannel rbc = Channels.newChannel(website.openStream());
 				FileOutputStream fos = new FileOutputStream(javaJson);
 				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-			} catch (MalformedURLException e){
+			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -81,8 +81,6 @@ public class Main{
 			}
 		}
 		addToClasspath(javaJson);
-
-		//TODO add a way to load the mod packs from the old launcher
 		File packsJson = new File(getHome(), "packs.json");
 		try {
 			println("Downloading the pack list");
@@ -91,7 +89,7 @@ public class Main{
 			e.printStackTrace();
 		}
 
-		if(packsJson.exists()){
+		if (packsJson.exists()) {
 			try {
 				println("Reading the pack list");
 				new PackLoader(this).loadPacks(form);
@@ -176,7 +174,7 @@ public class Main{
 			Launch.form.progressBar1.setValue(6);
 			println("Using forge");
 			File forgeInstaller = new File(forgeDir, "forge-" + minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion + "-installer.jar");
-			if(!forgeInstaller.exists()){
+			if (!forgeInstaller.exists()) {
 				try {
 					DownloadUtils.downloadFile("http://files.minecraftforge.net/maven/net/minecraftforge/forge/" + minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion + "/forge-" + minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion + "-installer.jar", forgeDir, forgeInstaller.getName());
 				} catch (IOException e) {
@@ -298,7 +296,7 @@ public class Main{
 		outputBuffer.append(string);
 
 		//Launch.form.textLog.append(string);
-		if(Launch.form == null)
+		if (Launch.form == null)
 			return;
 
 		Document document = Launch.form.textLog.getDocument();

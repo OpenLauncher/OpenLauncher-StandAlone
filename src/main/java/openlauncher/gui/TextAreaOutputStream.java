@@ -12,11 +12,11 @@ public class TextAreaOutputStream extends OutputStream {
 	 * Creates a new instance of TextAreaOutputStream which writes
 	 * to the specified instance of javax.swing.JTextArea control.
 	 *
-	 * @param control   A reference to the javax.swing.JTextArea
-	 *                  control to which the output must be redirected
-	 *                  to.
+	 * @param control A reference to the javax.swing.JTextArea
+	 *                control to which the output must be redirected
+	 *                to.
 	 */
-	public TextAreaOutputStream( JTextArea control ) {
+	public TextAreaOutputStream(JTextArea control) {
 		textControl = control;
 	}
 
@@ -24,11 +24,11 @@ public class TextAreaOutputStream extends OutputStream {
 	 * Writes the specified byte as a character to the
 	 * javax.swing.JTextArea.
 	 *
-	 * @param   b   The byte to be written as character to the
-	 *              JTextArea.
+	 * @param b The byte to be written as character to the
+	 *          JTextArea.
 	 */
-	public void write( int b ) throws IOException {
+	public void write(int b) throws IOException {
 		// append the data as characters to the JTextArea control
-		textControl.append( String.valueOf( ( char )b ) );
+		textControl.append(String.valueOf((char) b));
 	}
 }

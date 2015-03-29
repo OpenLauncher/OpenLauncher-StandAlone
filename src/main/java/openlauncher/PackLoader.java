@@ -40,7 +40,7 @@ public class PackLoader {
 		System.out.println(((Map) packs).keySet());
 		Iterator it = Launch.packMap.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry)it.next();
+			Map.Entry pair = (Map.Entry) it.next();
 			LauncherForm.packListString.addElement(pair.getKey());
 			Launch.modPacks.add((ModPack) pair.getValue());
 			it.remove(); // avoids a ConcurrentModificationException

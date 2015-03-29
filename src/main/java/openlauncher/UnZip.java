@@ -9,15 +9,15 @@ import java.util.zip.ZipInputStream;
 
 public class UnZip {
 
-	public static void unZip(File zipFile, File outputFolder){
+	public static void unZip(File zipFile, File outputFolder) {
 
 		byte[] buffer = new byte[1024];
 
-		try{
+		try {
 
 			//create output directory is not exists
 			File folder = outputFolder;
-			if(!folder.exists()){
+			if (!folder.exists()) {
 				folder.mkdir();
 			}
 
@@ -27,12 +27,12 @@ public class UnZip {
 			//get the zipped file list entry
 			ZipEntry ze = zis.getNextEntry();
 
-			while(ze!=null){
+			while (ze != null) {
 
 				String fileName = ze.getName();
 				File newFile = new File(outputFolder + File.separator + fileName);
 
-				System.out.println("file unzip : "+ newFile.getAbsoluteFile());
+				System.out.println("file unzip : " + newFile.getAbsoluteFile());
 
 				//create all non exists folders
 				//else you will hit FileNotFoundException for compressed folder
@@ -52,7 +52,7 @@ public class UnZip {
 			zis.closeEntry();
 			zis.close();
 
-		}catch(IOException ex){
+		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
 	}

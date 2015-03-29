@@ -34,40 +34,42 @@ public class ModPackInstaller {
 		System.out.println(main);
 		Launch.main.println("Starting " + pack.getInstanceName());
 		packFolder = new File(main.getHome(), "packs/" + pack.getInstanceName());
-		if(!packFolder.exists()){
+		if (!packFolder.exists()) {
 			packFolder.mkdirs();
 		}
 		DownloadUtils.downloadFile(pack.getJsonLocation(), packFolder, pack.getInstanceName() + ".json");
 		instances = getInstances(new File(packFolder, pack.getInstanceName() + ".json"));
 		VersionSelection.versionList.clear();
-		for(ModPackInstance instance : instances){
+		for (ModPackInstance instance : instances) {
 			VersionSelection.versionList.addElement(instance.getVersion());
 		}
-		if(!isInstalled()){
+		if (!isInstalled()) {
 			VersionSelection.main(this);
 		} else {
-			if(!isNewest()){
+			if (!isNewest()) {
 				JOptionPane.showMessageDialog(null, "An update is available!", "Update!", JOptionPane.WARNING_MESSAGE);
+				//TODO update packs
 			}
 			continueInstall(getInstalledInstance());
 		}
 
 	}
 
-	public void continueInstall(String version){
-		for(ModPackInstance packInstance : instances){
-			if(packInstance.version.equals(version)){
+	public void continueInstall(String version) {
+		for (ModPackInstance packInstance : instances) {
+			if (packInstance.version.equals(version)) {
 				continueInstall(packInstance);
 			}
 		}
 	}
 
-	public void continueInstall(ModPackInstance instance){
+	public void continueInstall(ModPackInstance instance) {
 		System.out.println(instance.version);
-		if(!isInstalled()){
-			//TODO install the pack here with all the mods
-			if(instance.type.equals("zip")){
+		if (!isInstalled()) {
+			if (instance.type.equals("zip")) {
 				new ZipPackType().checkMods(instance);
+			} else if (instance.type.equals("legacy")){
+				new LegacyType().checkMods(instance);
 			}
 			ModPackInstance installedInstance = new ModPackInstance(instance.instanceName, instance.forgeVersion, instance.minecraftVersion, instance.version, instance.type, instance.typeDownloadURL);
 			Gson gson = new Gson();
@@ -85,25 +87,25 @@ public class ModPackInstaller {
 		Launch.main.launch(instance.getInstanceName(), instance.getForgeVersion(), instance.getMinecraftVersion());
 	}
 
-	public boolean isInstalled(){
+	public boolean isInstalled() {
 		return new File(packFolder, "instance.json").exists();
 	}
 
 	public boolean isNewest() throws FileNotFoundException {
-		if(!new File(packFolder, "instance.json").exists()){
+		if (!new File(packFolder, "instance.json").exists()) {
 			return false;
 		}
 		Gson gson = new Gson();
 		BufferedReader br = new BufferedReader(new FileReader(new File(packFolder, "instance.json")));
 		ModPackInstance installedInstance = gson.fromJson(br, ModPackInstance.class);
-		if(installedInstance.getVersion().equals(instances.get(0).getVersion())){
+		if (!installedInstance.getVersion().equals(instances.get(0).getVersion())) {
 			return false;
 		}
 		return true;
 	}
 
 	public ModPackInstance getInstalledInstance() throws FileNotFoundException {
-		if(!new File(packFolder, "instance.json").exists()){
+		if (!new File(packFolder, "instance.json").exists()) {
 			return null;
 		}
 		Gson gson = new Gson();
@@ -122,11 +124,11 @@ public class ModPackInstaller {
 		Type stringStringMap = new TypeToken<Map<String, ModPackInstance>>() {
 		}.getType();
 		packs = gson.fromJson(object.get("versions"), stringStringMap);
-		packMap.putAll((Map)packs);
+		packMap.putAll((Map) packs);
 		ArrayList<ModPackInstance> instances = new ArrayList<ModPackInstance>();
 		Iterator it = packMap.entrySet().iterator();
 		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry)it.next();
+			Map.Entry pair = (Map.Entry) it.next();
 			instances.add((ModPackInstance) pair.getValue());
 			it.remove(); // avoids a ConcurrentModificationException
 		}

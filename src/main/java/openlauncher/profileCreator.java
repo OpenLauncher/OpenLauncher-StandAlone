@@ -1,6 +1,11 @@
 package openlauncher;
 
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
+import javax.json.JsonValue;
+import javax.json.JsonWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -20,7 +25,7 @@ public class profileCreator {
 			JsonObject file = reader.readObject();
 			reader.close();
 			JsonObject profiles = file.getJsonObject("profiles");
-			if(!profiles.containsKey(name)){
+			if (!profiles.containsKey(name)) {
 				JsonObject newProfile = Json.createObjectBuilder()
 						.add("name", name)
 						.add("gameDir", instanceDir.toString())
@@ -33,13 +38,13 @@ public class profileCreator {
 					objectBuilder.add(entry.getKey(), entry.getValue());
 
 				objectBuilder.add("selectedProfile", name);
-				if(file.getJsonString("clientToken") != null){
+				if (file.getJsonString("clientToken") != null) {
 					objectBuilder.add("clientToken", file.getJsonString("clientToken"));
 				}
-				if(!file.getJsonObject("authenticationDatabase").isEmpty()){
+				if (!file.getJsonObject("authenticationDatabase").isEmpty()) {
 					objectBuilder.add("authenticationDatabase", file.getJsonObject("authenticationDatabase"));
 				}
-				if(file.getJsonString("selectedUser") != null){
+				if (file.getJsonString("selectedUser") != null) {
 					objectBuilder.add("selectedUser", file.getJsonString("selectedUser"));
 				}
 
