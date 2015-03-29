@@ -95,6 +95,9 @@ public class ModPackInstaller {
 		if (!new File(packFolder, "instance.json").exists()) {
 			return false;
 		}
+		if(instances.size() == 1){
+			return true;
+		}
 		Gson gson = new Gson();
 		BufferedReader br = new BufferedReader(new FileReader(new File(packFolder, "instance.json")));
 		ModPackInstance installedInstance = gson.fromJson(br, ModPackInstance.class);
