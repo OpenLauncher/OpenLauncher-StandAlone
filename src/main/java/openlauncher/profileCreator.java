@@ -1,60 +1,62 @@
 package openlauncher;
 
-import net.minecraft.launcher.Launcher;
-import net.minecraft.launcher.profile.Profile;
-import net.minecraft.launcher.profile.ProfileManager;
-
-import javax.swing.*;
+import javax.json.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.PasswordAuthentication;
-import java.net.Proxy;
-import java.util.ArrayList;
-import java.util.List;
 
 public class profileCreator {
 
 	public static void createProfile(File mcDir, String version, String name, File instanceDir) throws FileNotFoundException, UnsupportedEncodingException {
 		File json = new File(mcDir, "launcher_profiles.json");
+		//TODO rewrite this again
+		//Read the file, then rewrite it with the extra data
 		if (json.exists()) {
-			JFrame frame = new JFrame();
-			List<String> list = new ArrayList<String>();
-			list.add("-help");
-			String[] newlist = new String[0];
-			//TODO write ownversion
-			Launcher launcher = new FakeMCLauncher(frame, Main.workDir, Proxy.NO_PROXY, (PasswordAuthentication) null, newlist, 10);
-			ProfileManager manager = launcher.getProfileManager();
-			try {
-				manager.loadProfiles();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			JsonReader reader = Json.createReader(new FileReader(json));
+			JsonObject file = reader.readObject();
+			reader.close();
+			JsonObject profiles = file.getJsonObject("profiles");
+			if(!profiles.containsKey(name)){
+				JsonObject newProfile = Json.createObjectBuilder()
+						.add("name", name)
+						.add("gameDir", instanceDir.toString())
+						.add("lastVersionId", version)
+						.build();
+				JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
+						.add(name, newProfile);
 
-			if (manager.getProfiles().containsKey(name)) {
-				System.out.println("This profile is there!");
-			} else {
-				Profile profile = new Profile();
-				profile.setName(name);
-				profile.setGameDir(instanceDir);
-				profile.setLastVersionId(version);
-				manager.getProfiles().put(name, profile);
-				System.out.println("added a new profile!");
-			}
+				for (java.util.Map.Entry<String, JsonValue> entry : profiles.entrySet())
+					objectBuilder.add(entry.getKey(), entry.getValue());
 
-			manager.setSelectedProfile(name);
+				objectBuilder.add("selectedProfile", name);
+				if(file.getJsonString("clientToken") != null){
+					objectBuilder.add("clientToken", file.getJsonString("clientToken"));
+				}
+				if(!file.getJsonObject("authenticationDatabase").isEmpty()){
+					objectBuilder.add("authenticationDatabase", file.getJsonObject("authenticationDatabase"));
+				}
+				if(file.getJsonString("selectedUser") != null){
+					objectBuilder.add("selectedUser", file.getJsonString("selectedUser"));
+				}
 
-			try {
-				System.out.println("Saving profiles");
-				manager.saveProfiles();
-			} catch (IOException e) {
-				e.printStackTrace();
+				JsonObject newProfiles = objectBuilder.build();
+
+				try {
+					JsonWriter writer = null;
+					writer = Json.createWriter(new FileWriter(json));
+					writer.writeObject(newProfile);
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
 			}
 
 			System.out.println("Saved");
-
 		} else {
 			PrintWriter writer = new PrintWriter(json, "UTF-8");
 

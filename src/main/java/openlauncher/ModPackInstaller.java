@@ -66,7 +66,10 @@ public class ModPackInstaller {
 		System.out.println(instance.version);
 		if(!isInstalled()){
 			//TODO install the pack here with all the mods
-			ModPackInstance installedInstance = new ModPackInstance(instance.instanceName, instance.forgeVersion, instance.minecraftVersion, instance.version, instance.type);
+			if(instance.type.equals("zip")){
+				new ZipPackType().checkMods(instance);
+			}
+			ModPackInstance installedInstance = new ModPackInstance(instance.instanceName, instance.forgeVersion, instance.minecraftVersion, instance.version, instance.type, instance.typeDownloadURL);
 			Gson gson = new Gson();
 			String json = gson.toJson(installedInstance);
 			try {

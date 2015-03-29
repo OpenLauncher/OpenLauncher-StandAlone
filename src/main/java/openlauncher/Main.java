@@ -145,16 +145,9 @@ public class Main{
 			}
 		}
 
-		Launch.form.progressBar1.setValue(3);
-		addToClasspath(mcExe);
-
-		mcBootstrap.downloadLauncher(this);
 
 		Launch.form.progressBar1.setValue(4);
 
-		mcLauncher = new File(mcDir, "launcher.jar");
-
-		addToClasspath(mcLauncher);
 
 		println("Creating the custom profiles");
 

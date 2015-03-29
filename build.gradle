@@ -37,9 +37,6 @@ dependencies {
     runtime 'com.google.code.gson:gson:2.2.4'
     compile 'com.intellij:forms_rt:7.0.3'
     compile fileTree(dir: 'libs', include: '*.jar')
-   // providedCompile 'libs/forge-1.7.10-10.13.2.1342-1.7.10-installer.jar'
-   // providedCompile 'libs/launcher.jar'
-   // providedCompile 'libs/MinecraftLauncher.jar'
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 

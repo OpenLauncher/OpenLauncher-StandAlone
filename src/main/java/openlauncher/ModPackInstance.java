@@ -7,13 +7,15 @@ public class ModPackInstance {
 	String minecraftVersion;
 	String version;
 	String type;
+	String typeDownloadURL;
 
-	public ModPackInstance(String instanceName, String forgeVersion, String minecraftVersion, String version, String type) {
+	public ModPackInstance(String instanceName, String forgeVersion, String minecraftVersion, String version, String type, String typeDownloadURL) {
 		this.instanceName = instanceName;
 		this.forgeVersion = forgeVersion;
 		this.minecraftVersion = minecraftVersion;
 		this.version = version;
 		this.type = type;
+		this.typeDownloadURL = typeDownloadURL;
 	}
 
 	public String getInstanceName() {
@@ -54,5 +56,13 @@ public class ModPackInstance {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getTypeDownloadURL() {
+		return typeDownloadURL;
+	}
+
+	public void setTypeDownloadURL(String typeDownloadURL) {
+		this.typeDownloadURL = typeDownloadURL;
 	}
 }
