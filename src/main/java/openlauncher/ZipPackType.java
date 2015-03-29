@@ -8,7 +8,7 @@ public class ZipPackType extends PackType {
 
 	@Override
 	public void checkMods(ModPackInstance modPackInstance) {
-		File workDir = new File(Launch.main.getHome().getAbsoluteFile() + "/", modPackInstance.getInstanceName());
+		File workDir = new File(Launch.main.getHome().getAbsoluteFile() + "/Instances/", modPackInstance.getInstanceName());
 		if (!workDir.exists())
 			workDir.mkdirs();
 
@@ -18,6 +18,10 @@ public class ZipPackType extends PackType {
 			e.printStackTrace();
 		}
 
-		UnZip.unZip(new File(workDir, modPackInstance.getInstanceName() + "-" + modPackInstance.version + ".zip"), workDir);
+		try {
+			UnZip.unZip(new File(workDir, modPackInstance.getInstanceName() + "-" + modPackInstance.version + ".zip"), workDir);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

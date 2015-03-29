@@ -18,8 +18,6 @@ public class profileCreator {
 
 	public static void createProfile(File mcDir, String version, String name, File instanceDir) throws FileNotFoundException, UnsupportedEncodingException {
 		File json = new File(mcDir, "launcher_profiles.json");
-		//TODO rewrite this again
-		//Read the file, then rewrite it with the extra data
 		if (json.exists()) {
 			JsonReader reader = Json.createReader(new FileReader(json));
 			JsonObject file = reader.readObject();
@@ -30,9 +28,10 @@ public class profileCreator {
 						.add("name", name)
 						.add("gameDir", instanceDir.toString())
 						.add("lastVersionId", version)
+						.add("launcherVisibilityOnGameClose", "keep the launcher open")
 						.build();
 				JsonObjectBuilder objectBuilder = Json.createObjectBuilder()
-						.add(name, newProfile);
+						.add("profiles", newProfile);
 
 				for (java.util.Map.Entry<String, JsonValue> entry : profiles.entrySet())
 					objectBuilder.add(entry.getKey(), entry.getValue());
@@ -53,15 +52,14 @@ public class profileCreator {
 				try {
 					JsonWriter writer = null;
 					writer = Json.createWriter(new FileWriter(json));
-					writer.writeObject(newProfile);
+					writer.writeObject(newProfiles);
+					System.out.println(newProfiles.toString());
+					System.out.println();
 					writer.close();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
 			}
-
-			System.out.println("Saved");
 		} else {
 			PrintWriter writer = new PrintWriter(json, "UTF-8");
 
@@ -71,7 +69,7 @@ public class profileCreator {
 			writer.println("      \"name\": \"" + name + "\",");
 			writer.println("      \"gameDir\": \"/Users/mark/Documents/GitHub/OpenLauncher-StandAlone/OpenLauncher/Instances/" + name + "\",");
 			writer.println("      \"lastVersionId\": \"" + version + "\",");
-			writer.println("      \"javaArgs\": \"-Xmx1G -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:-UseAdaptiveSizePolicy -Xmn128M\",");
+			writer.println("      \"javaArgs\": \"-Xmx1G -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:-UseAdaptiveSizePolicy -Xmn128M -XX:MaxPermSize=256M\",");
 			writer.println("      \"resolution\": {");
 			writer.println("        \"width\": 854,");
 			writer.println("        \"height\": 480");

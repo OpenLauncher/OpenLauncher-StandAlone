@@ -33,7 +33,7 @@ public class ModPackInstaller {
 		Main main = Launch.main;
 		System.out.println(main);
 		Launch.main.println("Starting " + pack.getInstanceName());
-		packFolder = new File(main.getHome(), "packs/" + pack.getInstanceName());
+		packFolder = new File(main.getHome(), "Instances/" + pack.getInstanceName());
 		if (!packFolder.exists()) {
 			packFolder.mkdirs();
 		}

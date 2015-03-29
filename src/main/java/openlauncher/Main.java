@@ -163,10 +163,10 @@ public class Main {
 		}
 
 
-		Launch.form.progressBar1.setValue(4);
+		Launch.form.progressBar1.setValue(3);
 
 
-		println("Creating the custom profiles");
+		println("Creating the profiles.jsonFile");
 
 		try {
 			if (forgeVersion != "") {
@@ -182,13 +182,14 @@ public class Main {
 			System.exit(-1);
 		}
 
-		Launch.form.progressBar1.setValue(5);
+		Launch.form.progressBar1.setValue(4);
 
 		if (forgeVersion != "") {
 			File mcverDir = new File(mcDir, "versions/" + minecraftVersion);
 			if (!mcverDir.exists()) {
 				println("Downloading minecraft");
 				MinecraftVersionInstaller.installMc(minecraftVersion, this);
+				Launch.form.progressBar1.setValue(5);
 			}
 			Launch.form.progressBar1.setValue(6);
 			println("Using forge");
@@ -196,6 +197,7 @@ public class Main {
 			if (!forgeInstaller.exists()) {
 				try {
 					DownloadUtils.downloadFile("http://files.minecraftforge.net/maven/net/minecraftforge/forge/" + minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion + "/forge-" + minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion + "-installer.jar", forgeDir, forgeInstaller.getName());
+					Launch.form.progressBar1.setValue(6);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -205,11 +207,12 @@ public class Main {
 			if (forgeInstaller.exists() && !(forgeInstallLocation.exists())) {
 				println("Installing forge");
 				ForgeInstaller.installForge(mcDir);
+				Launch.form.progressBar1.setValue(7);
 			}
 		}
 
 		println("Starting the minecraft launcher");
-		Launch.form.progressBar1.setValue(7);
+		Launch.form.progressBar1.setValue(8);
 
 		try {
 			Process proc = Runtime.getRuntime().exec("java -jar " + mcExe.getAbsolutePath() + " -workDir " + mcDir.getAbsolutePath());
@@ -219,13 +222,15 @@ public class Main {
 
 			String line = null;
 			println("<MINECRAFT>");
+			println("--See minecraft launcher!");
 
-			while ((line = br.readLine()) != null)
-				println(line);
-
-			println("</MINECRAFT>");
+//			while ((line = br.readLine()) != null)
+//				println(line);
+//
+//			println("</MINECRAFT>");
 			int exitVal = proc.waitFor();
 			println("Process exitValue: " + exitVal);
+			//TODO get the launcher ready to start again
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(-1);
