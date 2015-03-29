@@ -36,7 +36,6 @@ public class LauncherForm {
 				public void actionPerformed(ActionEvent e) {
 					Thread thread = new Thread() {
 						public void run() {
-
 							if (!selectedString.equals("")) {
 								ModPack pack = null;
 								for (ModPack modPack : Launch.modPacks) {

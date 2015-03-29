@@ -7,7 +7,12 @@ import com.google.gson.reflect.TypeToken;
 import openlauncher.gui.VersionSelection;
 import org.apache.commons.io.FileUtils;
 
+import javax.swing.*;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -41,8 +46,10 @@ public class ModPackInstaller {
 		if(!isInstalled()){
 			VersionSelection.main(this);
 		} else {
-			//TODO get the installed version of the pack here.
-			continueInstall(instances.get(0));
+			if(!isNewest()){
+				JOptionPane.showMessageDialog(null, "An update is available!", "Update!", JOptionPane.WARNING_MESSAGE);
+			}
+			continueInstall(getInstalledInstance());
 		}
 
 	}
@@ -58,16 +65,48 @@ public class ModPackInstaller {
 	public void continueInstall(ModPackInstance instance){
 		System.out.println(instance.version);
 		if(!isInstalled()){
-			//TODO install the pack here
-			//TODO create a json file with info about the installed version
+			//TODO install the pack here with all the mods
+			ModPackInstance installedInstance = new ModPackInstance(instance.instanceName, instance.forgeVersion, instance.minecraftVersion, instance.version, instance.type);
+			Gson gson = new Gson();
+			String json = gson.toJson(installedInstance);
+			try {
+				FileWriter writer = new FileWriter(new File(packFolder, "instance.json"));
+				writer.write(json);
+				writer.close();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		Launch.main.launch(instance.getInstanceName(), instance.getForgeVersion(), instance.getMinecraftVersion());
 	}
 
 	public boolean isInstalled(){
-		//TODO check to see if the json file is here and then see if it is the newest
+		return new File(packFolder, "instance.json").exists();
+	}
+
+	public boolean isNewest() throws FileNotFoundException {
+		if(!new File(packFolder, "instance.json").exists()){
+			return false;
+		}
+		Gson gson = new Gson();
+		BufferedReader br = new BufferedReader(new FileReader(new File(packFolder, "instance.json")));
+		ModPackInstance installedInstance = gson.fromJson(br, ModPackInstance.class);
+		if(installedInstance.getVersion().equals(instances.get(0).getVersion())){
+			return false;
+		}
 		return true;
+	}
+
+	public ModPackInstance getInstalledInstance() throws FileNotFoundException {
+		if(!new File(packFolder, "instance.json").exists()){
+			return null;
+		}
+		Gson gson = new Gson();
+		BufferedReader br = new BufferedReader(new FileReader(new File(packFolder, "instance.json")));
+		ModPackInstance installedInstance = gson.fromJson(br, ModPackInstance.class);
+		return installedInstance;
 	}
 
 

@@ -64,6 +64,24 @@ public class Main{
 		}
 		addToClasspath(commons);
 
+		File javaJson = new File(libsDir, "javax.json-1.0.4.jar");
+		if(!javaJson.exists()){
+			print("Downloading javax.json-1.0.4.jar");
+			try{
+				URL website = new URL("http://search.maven.org/remotecontent?filepath=org/glassfish/javax.json/1.0.4/javax.json-1.0.4.jar");
+				ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+				FileOutputStream fos = new FileOutputStream(javaJson);
+				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+			} catch (MalformedURLException e){
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		addToClasspath(javaJson);
+
 		//TODO add a way to load the mod packs from the old launcher
 		File packsJson = new File(getHome(), "packs.json");
 		try {

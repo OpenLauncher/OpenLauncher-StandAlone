@@ -24,6 +24,7 @@ public class profileCreator {
 			List<String> list = new ArrayList<String>();
 			list.add("-help");
 			String[] newlist = new String[0];
+			//TODO write ownversion
 			Launcher launcher = new FakeMCLauncher(frame, Main.workDir, Proxy.NO_PROXY, (PasswordAuthentication) null, newlist, 10);
 			ProfileManager manager = launcher.getProfileManager();
 			try {

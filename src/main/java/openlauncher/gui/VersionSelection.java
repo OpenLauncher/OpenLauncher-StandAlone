@@ -36,8 +36,13 @@ public class VersionSelection extends JDialog {
 	}
 
 	private void onOK() {
-		installer.continueInstall((String) versionSelectionList.getSelectedValue());
 		dispose();
+		Thread thread = new Thread() {
+			public void run() {
+				installer.continueInstall((String) versionSelectionList.getSelectedValue());
+			}
+		};
+		thread.start();
 	}
 
 	public static void main(ModPackInstaller modPackInstaller) {
