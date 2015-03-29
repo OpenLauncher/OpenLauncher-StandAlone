@@ -48,7 +48,7 @@ public class Main {
 
 		File commons = new File(libsDir, "commons-io-2.4.jar");
 		if (!commons.exists()) {
-			print("Downloading Commons-io");
+			println("Downloading commons-io-2.4.jar");
 			try {
 				URL website = new URL("http://central.maven.org/maven2/commons-io/commons-io/2.4/commons-io-2.4.jar");
 				ReadableByteChannel rbc = Channels.newChannel(website.openStream());
@@ -66,7 +66,7 @@ public class Main {
 
 		File javaJson = new File(libsDir, "javax.json-1.0.4.jar");
 		if (!javaJson.exists()) {
-			print("Downloading javax.json-1.0.4.jar");
+			println("Downloading javax.json-1.0.4.jar");
 			try {
 				URL website = new URL("http://search.maven.org/remotecontent?filepath=org/glassfish/javax.json/1.0.4/javax.json-1.0.4.jar");
 				ReadableByteChannel rbc = Channels.newChannel(website.openStream());
@@ -81,6 +81,25 @@ public class Main {
 			}
 		}
 		addToClasspath(javaJson);
+
+		File gsonJar = new File(libsDir, "gson-2.3.1.jar");
+		if (!gsonJar.exists()) {
+			println("Downloading gson-2.3.1.jar");
+			try {
+				URL website = new URL("http://central.maven.org/maven2/com/google/code/gson/gson/2.3.1/gson-2.3.1.jar");
+				ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+				FileOutputStream fos = new FileOutputStream(gsonJar);
+				fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		addToClasspath(gsonJar);
+
 		File packsJson = new File(getHome(), "packs.json");
 		try {
 			println("Downloading the pack list");

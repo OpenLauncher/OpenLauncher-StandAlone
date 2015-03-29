@@ -8,6 +8,9 @@ import java.util.Map;
 
 public class Launch {
 
+	//TODO http://www.techrepublic.com/article/work-with-java-web-start-beyond-the-sandbox/
+	//TODO https://docs.oracle.com/javase/tutorial/deployment/webstart/
+
 	public static Main main = new Main();
 	public static LauncherForm form;
 
