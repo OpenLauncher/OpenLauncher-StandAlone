@@ -3,7 +3,6 @@ package openlauncher;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +18,7 @@ public class UnZip {
 		Enumeration<? extends ZipEntry> entries = zipFile.entries();
 		while (entries.hasMoreElements()) {
 			ZipEntry entry = entries.nextElement();
-			File entryDestination = new File(outputFolder,  entry.getName());
+			File entryDestination = new File(outputFolder, entry.getName());
 			entryDestination.getParentFile().mkdirs();
 			if (entry.isDirectory())
 				entryDestination.mkdirs();
