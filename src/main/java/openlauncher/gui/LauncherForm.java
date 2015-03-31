@@ -1,5 +1,6 @@
 package openlauncher.gui;
 
+import com.alee.laf.WebLookAndFeel;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -29,6 +30,7 @@ public class LauncherForm {
 	private final Font MONOSPACED = new Font("Monospaced", 0, 12);
 
 	public LauncherForm() {
+		WebLookAndFeel.install();
 		$$$setupUI$$$();
 		if (launchModPackButton != null)
 			launchModPackButton.addActionListener(new ActionListener() {
