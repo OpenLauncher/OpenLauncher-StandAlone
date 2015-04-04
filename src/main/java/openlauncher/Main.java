@@ -103,7 +103,7 @@ public class Main {
 		File packsJson = new File(getHome(), "packs.json");
 		try {
 			println("Downloading the pack list");
-			DownloadUtils.downloadFile("http://modmuss50.me/files/packs.json", getHome(), "packs.json");
+			DownloadUtils.downloadFile("http://www.creeperrepo.net/OpenLauncher/launcher/packs.json", getHome(), "packs.json");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
