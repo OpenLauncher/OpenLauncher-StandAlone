@@ -1,0 +1,22 @@
+{
+  "mods": {
+    "mod": [
+      {
+        "url": "<Full URL TO MOD JAR file>",
+        "file": "<NAME OF JAR>",
+        "download": "universal/client/server",
+        "name": "<MOD NAME>",
+        "type": "mods",
+        "md5": "966e5aaca8d5238145de07d5d44e4822"
+      },
+      {
+        "url": "<Full URL TO MOD JAR file>",
+        "file": "<NAME OF JAR>",
+        "download": "universal/client/server",
+        "name": "<MOD NAME>",
+        "type": "mods",
+        "md5": "cc95cbb745f7f30dbc6ac8fdda5a81d5"
+      }
+    ]
+  }
+}
