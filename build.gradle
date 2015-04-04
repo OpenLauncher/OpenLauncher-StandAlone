@@ -11,7 +11,7 @@ buildscript {
 
 group = 'openlauncher'
 archivesBaseName = 'OpenLauncher'
-version = 'ProofOfConcept-0'
+version = 'json-test'
 targetCompatibility = '1.6'
 sourceCompatibility = '1.6'
 
@@ -22,19 +22,9 @@ repositories {
     }
 }
 
-configurations {
-    // configuration that holds jars to copy into lib
-    extraLibs
-}
 dependencies {
-    extraLibs 'commons-io:commons-io:2.4'
-    extraLibs 'com.google.code.gson:gson:2.2.4'
-    extraLibs 'com.intellij:forms_rt:7.0.3'
-}
-
-dependencies {
-    runtime 'commons-io:commons-io:2.4'
-    runtime 'com.google.code.gson:gson:2.2.4'
+    compile 'commons-io:commons-io:2.4'
+    compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.intellij:forms_rt:7.0.3'
     compile fileTree(dir: 'libs', include: '*.jar')
     testCompile group: 'junit', name: 'junit', version: '4.11'
@@ -56,9 +46,6 @@ jar {
     exclude 'com/mojang/**'
     exclude 'install_profile.json'
     manifest { attributes 'Main-Class': 'openlauncher.Launch' }
-    into('lib') {
-        from configurations.extraLibs
-    }
 }
 
 task wrapper(type: Wrapper) {
