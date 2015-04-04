@@ -1,38 +1,36 @@
 {
   "mods": {
-    "mod": [
-      {
-        "url": "<Full URL TO MOD JAR file>",
-        "file": "<NAME OF JAR>",
-        "download": "universal/client/server",
-        "name": "<MOD NAME>",
-        "type": "mods",
-        "version": "<MOD VERSION>",
-        "authors": "<MOD AUTHORS>",
-        "logo": "<Full URL to png>",
-        "license": "<URL TO LICENSE TXT FILE>",
-        "donation": "<URL TO DONATION PAGE>",
-        "description": "This is a short description of the mod",
-        "wiki": "<URL TO WIKI>",
-        "md5": "966e5aaca8d5238145de07d5d44e4822",
-        "minecraftVersion": "1.7.10"
-      },
-      {
-        "url": "<Full URL TO MOD JAR file>",
-        "file": "<NAME OF JAR>",
-        "download": "universal/client/server",
-        "name": "<MOD NAME>",
-        "type": "mods",
-        "version": "<MOD VERSION>",
-        "authors": "<MOD AUTHORS>",
-        "logo": "<Full URL to png>",
-        "license": "<URL TO LICENSE TXT FILE>",
-        "donation": "<URL TO DONATION PAGE>",
-        "description": "This is a short description of the mod",
-        "wiki": "<URL TO WIKI>",
-        "md5": "cc95cbb745f7f30dbc6ac8fdda5a81d5",
-        "minecraftVersion": "1.7.10"
-      }
-    ]
+    "ModmussCore": {
+      "url": "http://modmuss50.me/maven/ModmussCore-17/ModmussCore-1.7/1.1.15/ModmussCore-1.7-1.1.15-universal.jar",
+      "file": "ModmussCore-1.7-1.1.15-universal.jar",
+      "download": "universal",
+      "name": "ModmussCore-17",
+      "type": "mods",
+      "version": "1.1.15",
+      "authors": "modmuss50",
+      "logo": "",
+      "license": "",
+      "donation": "",
+      "description": "This is a core mod used by modmuss50's other mods!",
+      "wiki": "",
+      "md5": "",
+      "minecraftVersion": "1.7.10"
+    },
+    "network": {
+      "url": "http://modmuss50.me/maven/Network/network/0.1.22/network-0.1.22-universal.jar",
+      "file": "network-0.1.22-universal.jar",
+      "download": "universal",
+      "name": "Network",
+      "type": "mods",
+      "version": "0.1.22",
+      "authors": "modmuss50",
+      "logo": "",
+      "license": "",
+      "donation": "",
+      "description": "This is a tech mod by modmuss50",
+      "wiki": "",
+      "md5": "",
+      "minecraftVersion": "1.7.10"
+    }
   }
 }

@@ -78,7 +78,7 @@ public class ModPackInstaller {
 			} else if (instance.type.equals("json")) {
 				new JsonType().checkMods(instance);
 			}
-			ModPackInstance installedInstance = new ModPackInstance(instance.instanceName, instance.forgeVersion, instance.minecraftVersion, instance.version, instance.type, instance.typeDownloadURL);
+			ModPackInstance installedInstance = instance;
 			Gson gson = new Gson();
 			String json = gson.toJson(installedInstance);
 			try {
