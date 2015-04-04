@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import openlauncher.gui.VersionSelection;
+import openlauncher.jsonType.JsonType;
 import org.apache.commons.io.FileUtils;
 
 import javax.swing.*;
@@ -74,6 +75,8 @@ public class ModPackInstaller {
 				new ZipPackType().checkMods(instance);
 			} else if (instance.type.equals("legacy")) {
 				new LegacyType().checkMods(instance);
+			} else if (instance.type.equals("json")) {
+				new JsonType().checkMods(instance);
 			}
 			ModPackInstance installedInstance = new ModPackInstance(instance.instanceName, instance.forgeVersion, instance.minecraftVersion, instance.version, instance.type, instance.typeDownloadURL);
 			Gson gson = new Gson();

@@ -11,7 +11,11 @@
         "authors": "<MOD AUTHORS>",
         "logo": "<Full URL to png>",
         "license": "<URL TO LICENSE TXT FILE>",
-        "md5": "966e5aaca8d5238145de07d5d44e4822"
+        "donation": "<URL TO DONATION PAGE>",
+        "description": "This is a short description of the mod",
+        "wiki": "<URL TO WIKI>",
+        "md5": "966e5aaca8d5238145de07d5d44e4822",
+        "minecraftVersion": "1.7.10"
       },
       {
         "url": "<Full URL TO MOD JAR file>",
@@ -23,7 +27,11 @@
         "authors": "<MOD AUTHORS>",
         "logo": "<Full URL to png>",
         "license": "<URL TO LICENSE TXT FILE>",
-        "md5": "cc95cbb745f7f30dbc6ac8fdda5a81d5"
+        "donation": "<URL TO DONATION PAGE>",
+        "description": "This is a short description of the mod",
+        "wiki": "<URL TO WIKI>",
+        "md5": "cc95cbb745f7f30dbc6ac8fdda5a81d5",
+        "minecraftVersion": "1.7.10"
       }
     ]
   }
