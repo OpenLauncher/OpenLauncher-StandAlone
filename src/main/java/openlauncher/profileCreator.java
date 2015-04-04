@@ -67,7 +67,7 @@ public class profileCreator {
 			writer.println("  \"profiles\": {");
 			writer.println("      \"" + name + "\": {");
 			writer.println("      \"name\": \"" + name + "\",");
-			writer.println("      \"gameDir\": \"/Users/mark/Documents/GitHub/OpenLauncher-StandAlone/OpenLauncher/Instances/" + name + "\",");
+			writer.println("      \"gameDir\": \"/Users/mark/Documents/GitHub/OpenLauncher-StandAlone/OpenLauncher/instances/" + name + "\",");
 			writer.println("      \"lastVersionId\": \"" + version + "\",");
 			writer.println("      \"javaArgs\": \"-Xmx1G -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:-UseAdaptiveSizePolicy -Xmn128M -XX:MaxPermSize=256M\",");
 			writer.println("      \"resolution\": {");

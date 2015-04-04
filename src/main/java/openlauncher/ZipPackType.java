@@ -8,7 +8,7 @@ public class ZipPackType extends PackType {
 
 	@Override
 	public void checkMods(ModPackInstance modPackInstance) {
-		File workDir = new File(Launch.main.getHome().getAbsoluteFile() + "/Instances/", modPackInstance.getInstanceName());
+		File workDir = new File(Launch.main.getHome().getAbsoluteFile() + "/instances/", modPackInstance.getInstanceName());
 		if (!workDir.exists())
 			workDir.mkdirs();
 

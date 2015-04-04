@@ -32,7 +32,7 @@ public class JsonType extends PackType {
 
 	@Override
 	public void checkMods(ModPackInstance modPackInstance) {
-		File workDir = new File(Launch.main.getHome().getAbsoluteFile() + "/Instances/", modPackInstance.getInstanceName());
+		File workDir = new File(Launch.main.getHome().getAbsoluteFile() + "/instances/", modPackInstance.getInstanceName());
 		if (!workDir.exists())
 			workDir.mkdirs();
 
@@ -49,7 +49,7 @@ public class JsonType extends PackType {
 			modList = gson.fromJson(object.get("mods"), stringStringMap);
 
 			Map<String, DownloadableMod> modMap = new HashMap<String, DownloadableMod>();
-			modMap.putAll((Map)modList);
+			modMap.putAll((Map) modList);
 
 			Iterator it = modMap.entrySet().iterator();
 			while (it.hasNext()) {
@@ -58,23 +58,27 @@ public class JsonType extends PackType {
 			}
 
 
-
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(-1);
 		}
 
-		for(DownloadableMod downloadableMod : mods){
+		for (DownloadableMod downloadableMod : mods) {
 			//Do checks on the mod to check to see if it sould be installed.
-			if(downloadableMod.getDownload().equals("server")){
+			if (downloadableMod.getDownload().equals("server")) {
 				mods.remove(downloadableMod);
 			}
 		}
 
-		for(DownloadableMod downloadableMod : mods){
+		File modDir = new File(workDir, "mods");
+		if (!modDir.exists()) {
+			modDir.mkdirs();
+		}
+
+		for (DownloadableMod downloadableMod : mods) {
 			//TODO download all of the mods in one go, so the user can see 1 progress bar for all mods
 			try {
-				DownloadUtils.downloadFile(downloadableMod.getUrl(), new File(workDir, "mods"), downloadableMod.getFile());
+				DownloadUtils.downloadFile(downloadableMod.getUrl(), modDir, downloadableMod.getFile());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

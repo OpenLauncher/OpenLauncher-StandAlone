@@ -139,7 +139,7 @@ public class Main {
 		if (!mcDir.exists())
 			mcDir.mkdirs();
 
-		workDir = new File(getHome().getAbsoluteFile() + "/", instaceName);
+		workDir = new File(getHome().getAbsoluteFile() + "/instances", instaceName);
 		if (!workDir.exists())
 			workDir.mkdirs();
 
