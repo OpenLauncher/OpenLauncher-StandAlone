@@ -161,11 +161,7 @@ public class Main {
 				System.exit(-1);
 			}
 		}
-
-
 		Launch.form.progressBar1.setValue(3);
-
-
 		println("Creating the profiles.jsonFile");
 
 		try {
@@ -221,16 +217,13 @@ public class Main {
 			BufferedReader br = new BufferedReader(isr);
 
 			String line = null;
-			println("<MINECRAFT>");
-			println("--See minecraft launcher!");
-
-//			while ((line = br.readLine()) != null)
-//				println(line);
-//
-//			println("</MINECRAFT>");
+			while ((line = br.readLine()) != null)
+				print(line);
 			int exitVal = proc.waitFor();
 			println("Process exitValue: " + exitVal);
-			//TODO get the launcher ready to start again
+
+			//Getting the launcher ready to run again
+			Launch.form.launchModPackButton.setEnabled(true);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(-1);
@@ -316,26 +309,6 @@ public class Main {
 
 	public void print(String string) {
 		System.out.print(string);
-
-		outputBuffer.append(string);
-
-		//Launch.form.textLog.append(string);
-		if (Launch.form == null)
-			return;
-
-		Document document = Launch.form.textLog.getDocument();
-		final JScrollBar scrollBar = Launch.form.scrollBar1;
-
-		boolean shouldScroll = scrollBar.getValue() + scrollBar.getSize().getHeight() + MONOSPACED.getSize() * 2 > scrollBar.getMaximum();
-		try {
-			document.insertString(document.getLength(), string, null);
-		} catch (BadLocationException ignored) {
-		}
-		if (shouldScroll)
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					scrollBar.setValue(2147483647);
-				}
-			});
+		//TODO make a console
 	}
 }

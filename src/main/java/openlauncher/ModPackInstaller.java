@@ -39,7 +39,7 @@ public class ModPackInstaller {
 			packFolder.mkdirs();
 		}
 		if (pack.getInstanceName().equals("ATLPACK")) {
-			//TODO convert to the new pack json format
+			//TODO convert to the new pack json format - this will be done with a converter, mabey
 		} else {
 			DownloadUtils.downloadFile(pack.getJsonLocation(), packFolder, pack.getInstanceName() + ".json");
 		}
@@ -52,10 +52,27 @@ public class ModPackInstaller {
 			VersionSelection.main(this);
 		} else {
 			if (!isNewest()) {
-				JOptionPane.showMessageDialog(null, "An update is available!", "Update!", JOptionPane.WARNING_MESSAGE);
+				int o = JOptionPane.YES_NO_OPTION;
+				int dialogResult = JOptionPane.showConfirmDialog (null, "An update is available! Would you like to update?","Update!", o);
+				if(dialogResult == JOptionPane.YES_OPTION){
+					if(new File(packFolder, "mods").exists()){
+						new File(packFolder, "mods").delete();
+					}
+					if(new File(packFolder, "config").exists()){
+						new File(packFolder, "config").delete();
+					}
+					if(new File(packFolder, "instance.json").exists()){
+						new File(packFolder, "instance.json").delete();
+					}
+					VersionSelection.main(this);
+					//TODO look at this and see if it is working right.
+				} else {
+					continueInstall(getInstalledInstance());
+				}
 				//TODO update packs
+			} else {
+				continueInstall(getInstalledInstance());
 			}
-			continueInstall(getInstalledInstance());
 		}
 
 	}
