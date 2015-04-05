@@ -5,10 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import openlauncher.DownloadUtils;
-import openlauncher.Launch;
-import openlauncher.ModPackInstance;
-import openlauncher.PackType;
+import openlauncher.*;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -77,10 +74,19 @@ public class JsonType extends PackType {
 
 		for (DownloadableMod downloadableMod : mods) {
 			//TODO download all of the mods in one go, so the user can see 1 progress bar for all mods
-			try {
-				DownloadUtils.downloadFile(downloadableMod.getUrl(), modDir, downloadableMod.getFile());
-			} catch (IOException e) {
-				e.printStackTrace();
+			if(downloadableMod.type.equals("mods")){
+				try {
+					DownloadUtils.downloadFile(downloadableMod.getUrl(), modDir, downloadableMod.getFile());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else if (downloadableMod.type.equals("config")){
+				try {
+					DownloadUtils.downloadFile(downloadableMod.getUrl(), workDir, "configs.zip");
+					UnZip.unZip(new File(workDir, "configs.zip"), workDir);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
