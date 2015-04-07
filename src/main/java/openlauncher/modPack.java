@@ -1,9 +1,19 @@
 package openlauncher;
 
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 public class ModPack {
 	String instanceName;
 	String text;
 	String jsonLocation;
+    String logoLocation;
+    Texture texture;
 
 	public String getInstanceName() {
 		return instanceName;
@@ -28,4 +38,44 @@ public class ModPack {
 	public void setJsonLocation(String jsonLocation) {
 		this.jsonLocation = jsonLocation;
 	}
+
+    public Texture getTexture() {
+        if(getLogoLocation() == null){
+            return null;
+        }
+        if(texture == null){
+            File logoFolder = new File(Launch.main.getHome(), "img");
+            File logoFile = new File(logoFolder,getInstanceName() + ".png");
+            if(!logoFolder.exists()){
+                logoFolder.mkdirs();
+            }
+            if(!logoFile.exists()){
+                try {
+                    DownloadUtils.downloadFile(getLogoLocation(), logoFolder, getInstanceName() + ".png");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+            try {
+                texture = TextureLoader.getTexture("PNG", new FileInputStream(logoFile));
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return texture;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
+    public String getLogoLocation() {
+        return logoLocation;
+    }
+
+    public void setLogoLocation(String logoLocation) {
+        this.logoLocation = logoLocation;
+    }
 }
