@@ -1,6 +1,7 @@
 package openlauncher;
 
 
+import gui.OpenLauncherGui;
 import openlauncher.gui.LauncherForm;
 
 import javax.swing.*;
@@ -38,7 +39,7 @@ public class Main {
 	private final Font MONOSPACED = new Font("Monospaced", 0, 12);
 	private StringBuilder outputBuffer = new StringBuilder();
 
-	public void start(LauncherForm form) {
+	public void start(OpenLauncherGui form) {
 		Launch.form = form;
 		println("Starting the openLauncher");
 
@@ -125,7 +126,7 @@ public class Main {
 		this.minecraftVersion = minecraftVersion;
 
 		println("Starting " + instaceName);
-		Launch.form.progressBar1.setValue(1);
+	//	Launch.form.progressBar1.setValue(1);
 
 
 		println(getHome().getAbsolutePath());
@@ -147,7 +148,7 @@ public class Main {
 		if (!forgeDir.exists())
 			forgeDir.mkdirs();
 
-		Launch.form.progressBar1.setValue(2);
+	//	Launch.form.progressBar1.setValue(2);
 
 		//We will use a jar now
 		mcExe = new File(mcDir, "MinecraftLauncher.jar");
@@ -161,7 +162,7 @@ public class Main {
 				System.exit(-1);
 			}
 		}
-		Launch.form.progressBar1.setValue(3);
+		//Launch.form.progressBar1.setValue(3);
 		println("Creating the profiles.jsonFile");
 
 		try {
@@ -178,22 +179,22 @@ public class Main {
 			System.exit(-1);
 		}
 
-		Launch.form.progressBar1.setValue(4);
+		//Launch.form.progressBar1.setValue(4);
 
 		if (forgeVersion != "") {
 			File mcverDir = new File(mcDir, "versions/" + minecraftVersion);
 			if (!mcverDir.exists()) {
 				println("Downloading minecraft");
 				MinecraftVersionInstaller.installMc(minecraftVersion, this);
-				Launch.form.progressBar1.setValue(5);
+			//	Launch.form.progressBar1.setValue(5);
 			}
-			Launch.form.progressBar1.setValue(6);
+			//Launch.form.progressBar1.setValue(6);
 			println("Using forge");
 			File forgeInstaller = new File(forgeDir, "forge-" + minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion + "-installer.jar");
 			if (!forgeInstaller.exists()) {
 				try {
 					DownloadUtils.downloadFile("http://files.minecraftforge.net/maven/net/minecraftforge/forge/" + minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion + "/forge-" + minecraftVersion + "-" + forgeVersion + "-" + minecraftVersion + "-installer.jar", forgeDir, forgeInstaller.getName());
-					Launch.form.progressBar1.setValue(6);
+					//Launch.form.progressBar1.setValue(6);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -203,12 +204,12 @@ public class Main {
 			if (forgeInstaller.exists() && !(forgeInstallLocation.exists())) {
 				println("Installing forge");
 				ForgeInstaller.installForge(mcDir);
-				Launch.form.progressBar1.setValue(7);
+			//	Launch.form.progressBar1.setValue(7);
 			}
 		}
 
 		println("Starting the minecraft launcher");
-		Launch.form.progressBar1.setValue(8);
+		//Launch.form.progressBar1.setValue(8);
 
 		try {
 			Process proc = Runtime.getRuntime().exec("java -jar " + mcExe.getAbsolutePath() + " -workDir " + mcDir.getAbsolutePath());
@@ -223,7 +224,7 @@ public class Main {
 			println("Process exitValue: " + exitVal);
 
 			//Getting the launcher ready to run again
-			Launch.form.launchModPackButton.setEnabled(true);
+			//Launch.form.launchModPackButton.setEnabled(true);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(-1);

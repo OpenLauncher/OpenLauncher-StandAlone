@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import gui.OpenLauncherGui;
 import openlauncher.gui.LauncherForm;
 import openlauncher.legacyATL.ATLPack;
 import openlauncher.legacyATL.ATLPackHelper;
@@ -32,7 +33,8 @@ public class PackLoader {
 		this.main = main;
 	}
 
-	public void loadPacks(LauncherForm form) throws IOException {
+	public void loadPacks(OpenLauncherGui form) throws IOException {
+        Launch.form.packsComponent.packs.clear();
 		JsonObject object = this.parser.parse(FileUtils.readFileToString(this.jsonFile)).getAsJsonObject();
 		Object packs = new HashMap<String, ModPack>();
 		Type stringStringMap = new TypeToken<Map<String, ModPack>>() {
@@ -46,6 +48,7 @@ public class PackLoader {
 			LauncherForm.packListString.addElement(pair.getKey());
 			Launch.modPacks.add((ModPack) pair.getValue());
 			it.remove(); // avoids a ConcurrentModificationException
+            Launch.form.packsComponent.packs.add((ModPack) pair.getValue());
 		}
 
 		ATLPackHelper atlPackHelper = new ATLPackHelper();
@@ -57,6 +60,7 @@ public class PackLoader {
 			modPack.setText(atlPack.getDescription());
 			LauncherForm.packListString.addElement(modPack.getInstanceName());
 			Launch.modPacks.add(modPack);
+            Launch.form.packsComponent.packs.add(modPack);
 		}
 
 //		form.packList.repaint();

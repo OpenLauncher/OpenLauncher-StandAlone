@@ -1,5 +1,6 @@
 package openlauncher;
 
+import gui.OpenLauncherGui;
 import openlauncher.gui.LauncherForm;
 
 import java.util.ArrayList;
@@ -12,17 +13,16 @@ public class Launch {
 	//TODO https://docs.oracle.com/javase/tutorial/deployment/webstart/
 
 	public static Main main = new Main();
-	public static LauncherForm form;
+	public static OpenLauncherGui form;
 
 	public static final Map<String, ModPack> packMap = new HashMap<String, ModPack>();
 	public static ArrayList<ModPack> modPacks = new ArrayList<ModPack>();
 
 	public static void main(String[] args) {
 
-		form = new LauncherForm();
-
-		form.openGui();
-
+		form = new OpenLauncherGui();
 		main.start(form);
+
+        form.start();
 	}
 }

@@ -55,7 +55,7 @@ public class LauncherForm {
 					thread.start();
 				}
 			});
-		Launch.form = this;
+		//Launch.form = this;
 
 		packList.addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -88,11 +88,11 @@ public class LauncherForm {
 		frame.setResizable(false);
 		frame.pack();
 		frame.setVisible(true);
-		Launch.form = this;
+		//Launch.form = this;
 	}
 
 	private void createUIComponents() {
-		Launch.form = this;
+		//Launch.form = this;
 		//packList = new JList(Launch.packMap.keySet().toArray());
 		packList = new JList(packListString);
 		packList.setSelectedIndex(0);

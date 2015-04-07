@@ -19,7 +19,10 @@ public class OpenLauncherGui {
     public boolean isRunning = true;
     private long lastFrame;
 
-    public OpenLauncherGui() {
+
+    public PacksComponent packsComponent = new PacksComponent();
+
+    public void start(){
         setUpDisplay();
         setUpOpenGL();
         init();
@@ -107,7 +110,8 @@ public class OpenLauncherGui {
     public void init() {
         componets.add(new Wallpaper());
         componets.add(new Footer());
-        componets.add(new PacksComponent());
+        packsComponent.setupTextures();
+        componets.add(packsComponent);
     }
 
     public void setUpDisplay() {
