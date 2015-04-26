@@ -21,6 +21,7 @@ public class OpenLauncherGui {
 
 
     public PacksComponent packsComponent = new PacksComponent();
+    public static LoadingComponet loadingComponet = new LoadingComponet();
 
     public void start(){
         setUpDisplay();
@@ -112,6 +113,8 @@ public class OpenLauncherGui {
         componets.add(new Footer());
         packsComponent.setupTextures();
         componets.add(packsComponent);
+        loadingComponet.setupTextures();
+        componets.add(loadingComponet);
     }
 
     public void setUpDisplay() {

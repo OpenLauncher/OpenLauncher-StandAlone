@@ -1,7 +1,4 @@
-apply plugin: 'maven'
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
+import org.apache.tools.ant.taskdefs.condition.Os
 
 buildscript {
     repositories {
@@ -9,16 +6,48 @@ buildscript {
     }
 }
 
+plugins {
+    id 'java'
+    id 'groovy'
+}
+
+apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+
+apply from: './libraries.gradle'
+
+
+
+ext {
+    authorName = "modmuss50"
+    authorEmail = "modmuss50@gmail.com"
+    expectedGradleVersion = '2.2'
+    javaLanguageLevel = '1.8'
+}
+
 group = 'openlauncher'
 archivesBaseName = 'OpenLauncher'
-version = 'json-test'
+version = 'lwjgl-test'
 targetCompatibility = '1.6'
 sourceCompatibility = '1.6'
 
 repositories {
     mavenCentral()
+    jcenter()
     maven {
         url "https://libraries.minecraft.net/"
+    }
+    maven {
+        url "http://b2s-repo.googlecode.com/svn/trunk/mvn-repo"
+    }
+    maven {
+        url "http://java.freehep.org/maven2"
+    }
+    maven {
+        url "http://download.java.net/maven/2"
     }
 }
 
@@ -27,6 +56,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.intellij:forms_rt:7.0.3'
     compile fileTree(dir: 'libs', include: '*.jar')
+    compile(libraries.lwjgl)
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
@@ -45,9 +75,15 @@ jar {
     exclude 'net/minecraft/**'
     exclude 'com/mojang/**'
     exclude 'install_profile.json'
+    include 'gui/*'
+    include 'openlauncher/*'
+    include 'openlauncher/jsonType/*'
+    include 'openlauncher/legacyATL/*'
+    include 'img/*'
     manifest { attributes 'Main-Class': 'openlauncher.Launch' }
 }
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.6'
 }
+

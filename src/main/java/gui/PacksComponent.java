@@ -25,10 +25,7 @@ public class PacksComponent implements RenderComponet {
     boolean isScrolling = false;
     String selectedPack = "";
 
-
     public PacksComponent() {
-
-
     }
 
     public void setupTextures(){
@@ -47,6 +44,9 @@ public class PacksComponent implements RenderComponet {
 
     @Override
     public void render() {
+        if(OpenLauncherGui.loadingComponet.isLoading){
+            return;
+        }
         int i = 0;
         for (int j = 0; j < 45; j++) {
             if(scroll == scrolltwo){
@@ -104,17 +104,23 @@ public class PacksComponent implements RenderComponet {
                             for(ModPack packname : packs){
                                 if(packname.getInstanceName().equals(pack.getInstanceName())){
                                     if(selectedPack.equals(pack.getInstanceName()) && !isScrolling){
-                                        ModPack launchPack = null;
-                                        for (ModPack modPack : Launch.modPacks) {
-                                            if (modPack.getInstanceName().equals(selectedPack)) {
-                                                launchPack = modPack;
+                                        Thread thread = new Thread() {
+                                            public void run() {
+                                                ModPack launchPack = null;
+                                                for (ModPack modPack : Launch.modPacks) {
+                                                    if (modPack.getInstanceName().equals(selectedPack)) {
+                                                        launchPack = modPack;
+                                                    }
+                                                }
+                                                try {
+                                                    OpenLauncherGui.loadingComponet.isLoading = true;
+                                                    new ModPackInstaller().playPack(launchPack);
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
-                                        }
-                                        try {
-                                            new ModPackInstaller().playPack(launchPack);
-                                        } catch (IOException e1) {
-                                            e1.printStackTrace();
-                                        }
+                                        };
+                                        thread.start();
                                     }
                                     scrolltwo = -(d * 550 -550);
                                     isScrolling = true;

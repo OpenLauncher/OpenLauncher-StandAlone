@@ -45,7 +45,7 @@ public class PackLoader {
 		Iterator it = Launch.packMap.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
-			LauncherForm.packListString.addElement(pair.getKey());
+			//LauncherForm.packListString.addElement(pair.getKey());
 			Launch.modPacks.add((ModPack) pair.getValue());
 			it.remove(); // avoids a ConcurrentModificationException
             Launch.form.packsComponent.packs.add((ModPack) pair.getValue());
@@ -58,7 +58,7 @@ public class PackLoader {
 			modPack.setInstanceName(atlPack.getName());
 			modPack.setJsonLocation("ATLPACK");
 			modPack.setText(atlPack.getDescription());
-			LauncherForm.packListString.addElement(modPack.getInstanceName());
+			//LauncherForm.packListString.addElement(modPack.getInstanceName());
 			Launch.modPacks.add(modPack);
             Launch.form.packsComponent.packs.add(modPack);
 		}
