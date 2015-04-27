@@ -15,8 +15,8 @@ public class Launch {
 	public static Main main = new Main();
 	public static OpenLauncherGui form;
 
-	public static final Map<String, ModPack> packMap = new HashMap<String, ModPack>();
-	public static ArrayList<ModPack> modPacks = new ArrayList<ModPack>();
+	public static final Map<String, ModPack2> packMap = new HashMap<String, ModPack2>();
+	public static ArrayList<ModPack2> modPacks = new ArrayList<ModPack2>();
 
 	public static void main(String[] args) {
 

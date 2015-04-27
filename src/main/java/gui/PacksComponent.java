@@ -1,7 +1,7 @@
 package gui;
 
 import openlauncher.Launch;
-import openlauncher.ModPack;
+import openlauncher.ModPack2;
 import openlauncher.ModPackInstaller;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -22,7 +22,7 @@ import static org.lwjgl.opengl.GL11.glEnable;
 public class PacksComponent implements RenderComponet {
     Texture panelBackGroundTEX;
     Icon play;
-    public ArrayList<ModPack> packs = new ArrayList<ModPack>();
+    public ArrayList<ModPack2> packs = new ArrayList<ModPack2>();
     int scroll;
     int scrolltwo = 0;
     boolean isScrolling = false;
@@ -64,7 +64,7 @@ public class PacksComponent implements RenderComponet {
             }
         }
 
-        for (ModPack pack : packs) {
+        for (ModPack2 pack : packs) {
             glEnable(GL_BLEND);
             Color.white.bind();
             Texture packTexture = pack.getTexture();
@@ -104,13 +104,13 @@ public class PacksComponent implements RenderComponet {
                         if (Mouse.isButtonDown(0)) {
                             System.out.println(pack.getInstanceName());
                             int d = 0;
-                            for(ModPack packname : packs){
+                            for(ModPack2 packname : packs){
                                 if(packname.getInstanceName().equals(pack.getInstanceName())){
                                     if(selectedPack.equals(pack.getInstanceName()) && !isScrolling){
                                         Thread thread = new Thread() {
                                             public void run() {
-                                                ModPack launchPack = null;
-                                                for (ModPack modPack : Launch.modPacks) {
+                                                ModPack2 launchPack = null;
+                                                for (ModPack2 modPack : Launch.modPacks) {
                                                     if (modPack.getInstanceName().equals(selectedPack)) {
                                                         launchPack = modPack;
                                                     }
