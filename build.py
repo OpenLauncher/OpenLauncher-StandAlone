@@ -61,6 +61,6 @@ def zipdir(path, zip):
 build("macosx");
 build("windows");
 build("linux");
-build("freebsd");
-build("openbsd");
-build("solaris");
+#build("freebsd");
+#build("openbsd");
+#build("solaris");
