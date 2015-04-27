@@ -40,7 +40,7 @@ def build(version):
 	copy_tree(lwjglDir + "/lwjgl/native/" + version, filename + "OpenLauncher/natives");
 	#build zipFile
 	print("--Creating zip file " + version)
-	shutil.make_archive(buildDir + 'OpenLauncher-' + version + '-' + jarVersion +, 'zip', filename)
+	shutil.make_archive(buildDir + 'OpenLauncher-' + version + '-' + jarVersion, 'zip', filename)
 
 
 def make_sure_path_exists(path):
