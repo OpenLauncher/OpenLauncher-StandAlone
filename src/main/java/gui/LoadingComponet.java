@@ -1,11 +1,11 @@
 package gui;
 
-import org.newdawn.slick.*;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
-import java.awt.Font;
+import java.awt.*;
 import java.io.IOException;
 
 public class LoadingComponet implements RenderComponet {

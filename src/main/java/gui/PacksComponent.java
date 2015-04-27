@@ -14,7 +14,10 @@ import org.newdawn.slick.util.ResourceLoader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+import static org.lwjgl.opengl.GL11.glEnable;
 
 public class PacksComponent implements RenderComponet {
     Texture panelBackGroundTEX;

@@ -2,11 +2,7 @@ package openlauncher;
 
 
 import gui.OpenLauncherGui;
-import openlauncher.gui.LauncherForm;
 
-import javax.swing.*;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;

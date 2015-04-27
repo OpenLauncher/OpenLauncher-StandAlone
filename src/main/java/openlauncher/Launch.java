@@ -1,7 +1,6 @@
 package openlauncher;
 
 import gui.OpenLauncherGui;
-import openlauncher.gui.LauncherForm;
 
 import java.io.File;
 import java.util.ArrayList;
