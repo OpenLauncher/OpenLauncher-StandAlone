@@ -14,10 +14,12 @@ buildDir = os.path.dirname(os.path.abspath(sys.argv[0])) + "/builds/"
 lwjglDir = os.path.dirname(os.path.abspath(sys.argv[0]))
 runDir = os.path.dirname(os.path.abspath(sys.argv[0])) + "/"
 jarVersion = "0.0.0"
-if(os.environ.get('BUILD_NUMBER') != None):
-	jarVersion = "0.0." + os.environ.get('BUILD_NUMBER')
+if(os.environ['BUILD_NUMBER'] != None):
+	jarVersion = "0.0." + os.environ['BUILD_NUMBER']
 
 jarName = "OpenLauncher-lwjgl-test-main.jar"
+
+print("Buidling version: " + jarVersion)
 
 
 def build(version):
