@@ -19,3 +19,5 @@ OpenLauncher-StandAlone.iml
 .gradle/
 OpenLauncher/*
 build/*
+builds/*
+buildZip/*
