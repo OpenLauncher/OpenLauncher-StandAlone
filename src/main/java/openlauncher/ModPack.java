@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class ModPack2 {
+public class ModPack {
 	String instanceName;
 	String text;
 	String jsonLocation;

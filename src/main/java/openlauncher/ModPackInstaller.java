@@ -24,12 +24,12 @@ import java.util.Map;
 public class ModPackInstaller {
 
 	static File packFolder;
-	ModPack2 pack;
+	ModPack pack;
 
 	ArrayList<ModPackInstance> instances;
 
 	//This will check to see if anything needs downloading or updating, then it will load the pack
-	public void playPack(ModPack2 pack) throws IOException {
+	public void playPack(ModPack pack) throws IOException {
 		this.pack = pack;
 		Main main = Launch.main;
 		System.out.println(main);
@@ -147,7 +147,7 @@ public class ModPackInstaller {
 		Gson gson = new Gson();
 		JsonObject object = parser.parse(FileUtils.readFileToString(json)).getAsJsonObject();
 		Object packs = new HashMap<String, ModPackInstance>();
-		Map<String, ModPack2> packMap = new HashMap<String, ModPack2>();
+		Map<String, ModPack> packMap = new HashMap<String, ModPack>();
 		Type stringStringMap = new TypeToken<Map<String, ModPackInstance>>() {
 		}.getType();
 		packs = gson.fromJson(object.get("versions"), stringStringMap);

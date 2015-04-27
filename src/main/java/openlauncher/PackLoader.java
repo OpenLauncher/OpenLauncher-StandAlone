@@ -33,8 +33,8 @@ public class PackLoader {
 	public void loadPacks(OpenLauncherGui form) throws IOException {
         Launch.form.packsComponent.packs.clear();
 		JsonObject object = this.parser.parse(FileUtils.readFileToString(this.jsonFile)).getAsJsonObject();
-		Object packs = new HashMap<String, ModPack2>();
-		Type stringStringMap = new TypeToken<Map<String, ModPack2>>() {
+		Object packs = new HashMap<String, ModPack>();
+		Type stringStringMap = new TypeToken<Map<String, ModPack>>() {
 		}.getType();
 		packs = gson.fromJson(object.get("packs"), stringStringMap);
 		Launch.packMap.putAll((Map) packs);
@@ -43,9 +43,9 @@ public class PackLoader {
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
 			//LauncherForm.packListString.addElement(pair.getKey());
-			Launch.modPacks.add((ModPack2) pair.getValue());
+			Launch.modPacks.add((ModPack) pair.getValue());
 			it.remove(); // avoids a ConcurrentModificationException
-            Launch.form.packsComponent.packs.add((ModPack2) pair.getValue());
+            Launch.form.packsComponent.packs.add((ModPack) pair.getValue());
 		}
 
 //		form.packList.repaint();
