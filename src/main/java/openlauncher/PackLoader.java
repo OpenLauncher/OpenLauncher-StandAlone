@@ -5,7 +5,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import gui.OpenLauncherGui;
+import openlauncher.gui.LauncherForm;
+import openlauncher.legacyATL.ATLPack;
+import openlauncher.legacyATL.ATLPackHelper;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -22,8 +24,6 @@ public class PackLoader {
 	private final File jsonFile;
 	private Main main;
 
-	public static boolean oflineDev = true;
-
 	public PackLoader(Main main) {
 		this.jsonFile = new File(main.getHome(), "packs.json");
 		GsonBuilder builder = new GsonBuilder();
@@ -32,28 +32,31 @@ public class PackLoader {
 		this.main = main;
 	}
 
-	public void loadPacks(OpenLauncherGui form) throws IOException {
-        Launch.form.packsComponent.packs.clear();
-		if(!oflineDev){
-			JsonObject object = this.parser.parse(FileUtils.readFileToString(this.jsonFile)).getAsJsonObject();
-			Object packs = new HashMap<String, ModPack>();
-			Type stringStringMap = new TypeToken<Map<String, ModPack>>() {
-			}.getType();
-			packs = gson.fromJson(object.get("packs"), stringStringMap);
-			Launch.packMap.putAll((Map) packs);
-			System.out.println(((Map) packs).keySet());
-		} else {
-			Launch.packMap.put("test", new ModPack("test", "this is a test", "", "", null));
-			Launch.packMap.put("test", new ModPack("test2", "this is still a test", "", "", null));
-		}
-
+	public void loadPacks(LauncherForm form) throws IOException {
+		JsonObject object = this.parser.parse(FileUtils.readFileToString(this.jsonFile)).getAsJsonObject();
+		Object packs = new HashMap<String, ModPack>();
+		Type stringStringMap = new TypeToken<Map<String, ModPack>>() {
+		}.getType();
+		packs = gson.fromJson(object.get("packs"), stringStringMap);
+		Launch.packMap.putAll((Map) packs);
+		System.out.println(((Map) packs).keySet());
 		Iterator it = Launch.packMap.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
-			//LauncherForm.packListString.addElement(pair.getKey());
+			LauncherForm.packListString.addElement(pair.getKey());
 			Launch.modPacks.add((ModPack) pair.getValue());
 			it.remove(); // avoids a ConcurrentModificationException
-            Launch.form.packsComponent.packs.add((ModPack) pair.getValue());
+		}
+
+		ATLPackHelper atlPackHelper = new ATLPackHelper();
+		atlPackHelper.loadPacks();
+		for (ATLPack atlPack : atlPackHelper.packs) {
+			ModPack modPack = new ModPack();
+			modPack.setInstanceName(atlPack.getName());
+			modPack.setJsonLocation("ATLPACK");
+			modPack.setText(atlPack.getDescription());
+			LauncherForm.packListString.addElement(modPack.getInstanceName());
+			Launch.modPacks.add(modPack);
 		}
 
 //		form.packList.repaint();

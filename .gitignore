@@ -4,6 +4,7 @@
 .mtj.tmp/
 
 # Package Files #
+*.jar
 *.war
 *.ear
 
@@ -15,8 +16,6 @@ OpenLauncher-StandAlone.iml
 
 OpenLauncher-StandAlone.iml
 
-.gradle/*
+.gradle/
 OpenLauncher/*
 build/*
-builds/*
-buildZip/*
