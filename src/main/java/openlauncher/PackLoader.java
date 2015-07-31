@@ -22,6 +22,8 @@ public class PackLoader {
 	private final File jsonFile;
 	private Main main;
 
+	public static boolean oflineDev = true;
+
 	public PackLoader(Main main) {
 		this.jsonFile = new File(main.getHome(), "packs.json");
 		GsonBuilder builder = new GsonBuilder();
@@ -32,13 +34,19 @@ public class PackLoader {
 
 	public void loadPacks(OpenLauncherGui form) throws IOException {
         Launch.form.packsComponent.packs.clear();
-		JsonObject object = this.parser.parse(FileUtils.readFileToString(this.jsonFile)).getAsJsonObject();
-		Object packs = new HashMap<String, ModPack>();
-		Type stringStringMap = new TypeToken<Map<String, ModPack>>() {
-		}.getType();
-		packs = gson.fromJson(object.get("packs"), stringStringMap);
-		Launch.packMap.putAll((Map) packs);
-		System.out.println(((Map) packs).keySet());
+		if(!oflineDev){
+			JsonObject object = this.parser.parse(FileUtils.readFileToString(this.jsonFile)).getAsJsonObject();
+			Object packs = new HashMap<String, ModPack>();
+			Type stringStringMap = new TypeToken<Map<String, ModPack>>() {
+			}.getType();
+			packs = gson.fromJson(object.get("packs"), stringStringMap);
+			Launch.packMap.putAll((Map) packs);
+			System.out.println(((Map) packs).keySet());
+		} else {
+			Launch.packMap.put("test", new ModPack("test", "this is a test", "", "", null));
+			Launch.packMap.put("test", new ModPack("test2", "this is still a test", "", "", null));
+		}
+
 		Iterator it = Launch.packMap.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();

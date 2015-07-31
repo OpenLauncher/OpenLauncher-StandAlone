@@ -14,6 +14,17 @@ public class ModPack {
     String logoLocation;
     Texture texture;
 
+	public ModPack(String instanceName, String text, String jsonLocation, String logoLocation, Texture texture) {
+		this.instanceName = instanceName;
+		this.text = text;
+		this.jsonLocation = jsonLocation;
+		this.logoLocation = logoLocation;
+		this.texture = texture;
+	}
+
+	public ModPack() {
+	}
+
 	public String getInstanceName() {
 		return instanceName;
 	}
@@ -39,7 +50,7 @@ public class ModPack {
 	}
 
     public Texture getTexture() {
-        if(getLogoLocation() == null){
+        if(getLogoLocation() == null || PackLoader.oflineDev){
             return null;
         }
         if(texture == null){
