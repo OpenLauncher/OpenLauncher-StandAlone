@@ -4,8 +4,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import openlauncher.DownloadUtils;
-import openlauncher.Launch;
+import openlauncher.Main;
+import openlauncher.util.DownloadUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,12 +21,12 @@ public class ATLPackHelper {
 
 
 	public void loadPacks() throws IOException {
-		Launch.main.println("Loading ATL packs");
-		File atlDir = new File(Launch.main.getHome(), "atl");
+		Main.openLauncher.logger.debug("Loading ATL packs");
+		File atlDir = new File(Main.openLauncher.getHome(), "atl");
 		if (!atlDir.exists()) {
 			atlDir.mkdirs();
 		}
-		DownloadUtils.downloadFile("http://www.creeperrepo.net/OpenLauncher/launcher/json/packs.json", atlDir, "packs.json");
+		DownloadUtils.downloadFile("http://www.creeperrepo.net/OpenLauncher/launcher/json/packs.json", atlDir, "packs.json", "");//TODO md5
 		try {
 			java.lang.reflect.Type type = new TypeToken<List<ATLPack>>() {
 			}.getType();
@@ -38,6 +38,6 @@ public class ATLPackHelper {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		Launch.main.println("Finished loading ATL packs");
+		Main.openLauncher.logger.debug("Finished loading ATL packs");
 	}
 }

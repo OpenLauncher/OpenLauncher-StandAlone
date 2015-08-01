@@ -1,9 +1,13 @@
-package openlauncher;
+package openlauncher.modPack;
 
 public class ModPack {
 	String instanceName;
 	String text;
 	String jsonLocation;
+
+	public ModPack(String instanceName) {
+		this.instanceName = instanceName;
+	}
 
 	public String getInstanceName() {
 		return instanceName;

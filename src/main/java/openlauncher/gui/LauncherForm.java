@@ -1,11 +1,14 @@
 package openlauncher.gui;
 
+import com.alee.laf.WebLookAndFeel;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import openlauncher.Launch;
-import openlauncher.ModPack;
-import openlauncher.ModPackInstaller;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
+import openlauncher.Main;
+import openlauncher.modPack.ModPack;
+import openlauncher.modPack.ModPackInstaller;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -14,21 +17,39 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 public class LauncherForm {
+	public static DefaultListModel packListString = new DefaultListModel();
+	public static String selectedString = "";
+	private final Font MONOSPACED = new Font("Monospaced", 0, 12);
 	public JPanel panel1;
 	public JButton launchModPackButton;
 	public JProgressBar progressBar1;
 	public JList packList;
 	public JTextArea textLog;
-	public JScrollBar scrollBar1;
-	public static DefaultListModel packListString = new DefaultListModel();
-	public static String selectedString = "";
-
-	private final Font MONOSPACED = new Font("Monospaced", 0, 12);
+	public JTabbedPane tabbedPane1;
+	public JTextField mcProArgs;
+	public JTextField MCJVMArgs;
+	public JComboBox serverBox;
+	public JLabel serverInfoLabel;
+	public JLabel JVMInfo;
+	public JLabel ProgInfo;
+	public JButton JVMReset;
+	public JButton ProgReset;
+	public JButton ServerLocReset;
+	public JLabel info1;
+	public JLabel info2;
+	public JLabel info3;
+	public JLabel info4;
+	public JLabel info0;
 
 	public LauncherForm() {
+		WebLookAndFeel.install(true);
+		WebLookAndFeel.setDecorateAllWindows(true);
+		WebLookAndFeel.setAllowLinuxTransparency(true);
 		$$$setupUI$$$();
 		if (launchModPackButton != null)
 			launchModPackButton.addActionListener(new ActionListener() {
@@ -38,7 +59,7 @@ public class LauncherForm {
 						public void run() {
 							if (!selectedString.equals("")) {
 								ModPack pack = null;
-								for (ModPack modPack : Launch.modPacks) {
+								for (ModPack modPack : Main.modPacks) {
 									if (modPack.getInstanceName().equals(selectedString)) {
 										pack = modPack;
 									}
@@ -55,7 +76,7 @@ public class LauncherForm {
 					thread.start();
 				}
 			});
-		Launch.form = this;
+		Main.form = this;
 
 		packList.addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -64,7 +85,38 @@ public class LauncherForm {
 					JList source = (JList) e.getSource();
 					String selected = source.getSelectedValue().toString();
 					selectedString = selected;
+					System.out.println(selectedString);
+					for (ModPack pack : Main.modPacks) {
+						if (pack.getInstanceName().equals(selectedString)) {
+							textLog.setText(pack.getText());
+						}
+					}
 				}
+			}
+		});
+
+
+		JVMInfo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				JOptionPane.showConfirmDialog(null, "Add arguments to pass to the JVM that minecraft is running in", "OpenLauncher", JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+
+		ProgInfo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JOptionPane.showConfirmDialog(null, "Add arguments to pass to minecraft when it is started", "OpenLauncher", JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
+				super.mouseClicked(e);
+			}
+		});
+
+		serverInfoLabel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JOptionPane.showConfirmDialog(null, "Select the server that the open launcher should use to download its files. Select the one closest to your location.", "OpenLauncher", JOptionPane.CLOSED_OPTION, JOptionPane.PLAIN_MESSAGE);
+				super.mouseClicked(e);
 			}
 		});
 	}
@@ -75,24 +127,30 @@ public class LauncherForm {
 		frame.setContentPane(panel1);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		createUIComponents();
+
 		textLog.setLineWrap(true);
 		textLog.setEditable(false);
 		textLog.setFont(MONOSPACED);
 		((DefaultCaret) textLog.getCaret()).setUpdatePolicy(1);
+
+		serverBox.addItem("UK - London");
+		serverBox.addItem("US - Atlanta");
+		serverBox.addItem("US - Miami");
 
 		//TODO make this also print out to the console
 //		PrintStream out = new PrintStream(new TextAreaOutputStream(textLog));
 //		System.setOut(out);
 //		System.setErr(out);
 
-		frame.setResizable(false);
+		frame.setMinimumSize(new Dimension(900, 600));
+		frame.setResizable(true);
 		frame.pack();
 		frame.setVisible(true);
-		Launch.form = this;
+		Main.form = this;
 	}
 
 	private void createUIComponents() {
-		Launch.form = this;
+		Main.form = this;
 		//packList = new JList(Launch.packMap.keySet().toArray());
 		packList = new JList(packListString);
 		packList.setSelectedIndex(0);
@@ -108,31 +166,114 @@ public class LauncherForm {
 	private void $$$setupUI$$$() {
 		createUIComponents();
 		panel1 = new JPanel();
-		panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+		panel1.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+		tabbedPane1 = new JTabbedPane();
+		panel1.add(tabbedPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
 		final JPanel panel2 = new JPanel();
-		panel2.setLayout(new GridLayoutManager(2, 4, new Insets(0, 0, 0, 0), -1, -1));
-		panel1.add(panel2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, new Dimension(854, 480), null, new Dimension(854, 480), 0, false));
-		final Spacer spacer1 = new Spacer();
-		panel2.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		panel2.setLayout(new CardLayout(0, 0));
+		tabbedPane1.addTab("Packs", panel2);
 		final JPanel panel3 = new JPanel();
-		panel3.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-		panel2.add(panel3, new GridConstraints(1, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+		panel3.setLayout(new GridLayoutManager(2, 4, new Insets(0, 0, 0, 0), -1, -1));
+		panel2.add(panel3, "Card1");
+		final Spacer spacer1 = new Spacer();
+		panel3.add(spacer1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
 		final JPanel panel4 = new JPanel();
 		panel4.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-		panel3.add(panel4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+		panel3.add(panel4, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+		final JPanel panel5 = new JPanel();
+		panel5.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+		panel4.add(panel5, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
 		launchModPackButton = new JButton();
+		launchModPackButton.setBackground(new Color(-16773823));
+		launchModPackButton.setForeground(new Color(-4521965));
+		launchModPackButton.setOpaque(true);
 		launchModPackButton.setText("Launch Mod Pack");
-		panel4.add(launchModPackButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		panel2.add(packList, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+		panel5.add(launchModPackButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		packList.setAutoscrolls(false);
+		packList.setSelectedIndex(-1);
+		panel3.add(packList, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
 		textLog = new JTextArea();
 		textLog.setEditable(false);
 		textLog.setText("");
-		panel2.add(textLog, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+		panel3.add(textLog, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
 		progressBar1 = new JProgressBar();
 		progressBar1.setMaximum(8);
-		panel2.add(progressBar1, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		scrollBar1 = new JScrollBar();
-		panel2.add(scrollBar1, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		progressBar1.setString("Waiting...");
+		progressBar1.setStringPainted(true);
+		panel3.add(progressBar1, new GridConstraints(1, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		final JPanel panel6 = new JPanel();
+		panel6.setLayout(new CardLayout(0, 0));
+		tabbedPane1.addTab("Settings", panel6);
+		final JPanel panel7 = new JPanel();
+		panel7.setLayout(new FormLayout("fill:d:noGrow,left:4dlu:noGrow,fill:max(d;4px):noGrow,left:4dlu:noGrow,fill:d:grow,left:4dlu:noGrow,fill:max(d;4px):noGrow", "center:d:noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow,top:3dlu:noGrow,center:max(d;4px):noGrow"));
+		panel6.add(panel7, "Card1");
+		final JLabel label1 = new JLabel();
+		label1.setText("Settings");
+		CellConstraints cc = new CellConstraints();
+		panel7.add(label1, cc.xy(1, 1));
+		final JLabel label2 = new JLabel();
+		label2.setText("Minecraft JVM Argurments");
+		panel7.add(label2, cc.xy(1, 3));
+		final JLabel label3 = new JLabel();
+		label3.setText("Minecraft Program Arguments");
+		panel7.add(label3, cc.xy(1, 5));
+		mcProArgs = new JTextField();
+		panel7.add(mcProArgs, cc.xy(5, 5, CellConstraints.FILL, CellConstraints.DEFAULT));
+		MCJVMArgs = new JTextField();
+		panel7.add(MCJVMArgs, cc.xy(5, 3, CellConstraints.FILL, CellConstraints.DEFAULT));
+		final JLabel label4 = new JLabel();
+		label4.setText("Server Location");
+		panel7.add(label4, cc.xy(1, 7));
+		serverBox = new JComboBox();
+		panel7.add(serverBox, cc.xy(5, 7));
+		serverInfoLabel = new JLabel();
+		serverInfoLabel.setForeground(new Color(-16775237));
+		serverInfoLabel.setText("Help?");
+		serverInfoLabel.setToolTipText("The Location of the server that hosts the OpenLauncher Files");
+		panel7.add(serverInfoLabel, cc.xy(3, 7));
+		ProgInfo = new JLabel();
+		ProgInfo.setForeground(new Color(-16775237));
+		ProgInfo.setText("Help?");
+		panel7.add(ProgInfo, cc.xy(3, 5));
+		JVMInfo = new JLabel();
+		JVMInfo.setForeground(new Color(-16775237));
+		JVMInfo.setText("Help?");
+		panel7.add(JVMInfo, cc.xy(3, 3));
+		JVMReset = new JButton();
+		JVMReset.setText("Reset");
+		panel7.add(JVMReset, cc.xy(7, 3));
+		ProgReset = new JButton();
+		ProgReset.setText("Reset");
+		panel7.add(ProgReset, cc.xy(7, 5));
+		ServerLocReset = new JButton();
+		ServerLocReset.setText("Reset");
+		panel7.add(ServerLocReset, cc.xy(7, 7));
+		final JPanel panel8 = new JPanel();
+		panel8.setLayout(new CardLayout(0, 0));
+		tabbedPane1.addTab("Pack Wizard", panel8);
+		final JPanel panel9 = new JPanel();
+		panel9.setLayout(new CardLayout(0, 0));
+		tabbedPane1.addTab("About", panel9);
+		final JPanel panel10 = new JPanel();
+		panel10.setLayout(new GridLayoutManager(5, 1, new Insets(0, 0, 0, 0), -1, -1));
+		panel9.add(panel10, "Card1");
+		info0 = new JLabel();
+		info0.setFont(new Font("Adobe Caslon Pro", Font.BOLD, 48));
+		info0.setText("Open Launcher");
+		panel10.add(info0, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		info1 = new JLabel();
+		info1.setText("Programmer\t\tModmuss50\n");
+		info1.setVerticalTextPosition(1);
+		panel10.add(info1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		info2 = new JLabel();
+		info2.setText("Stuff and things");
+		panel10.add(info2, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		info3 = new JLabel();
+		info3.setText("Label");
+		panel10.add(info3, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		info4 = new JLabel();
+		info4.setText("Label");
+		panel10.add(info4, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 	}
 
 	/**

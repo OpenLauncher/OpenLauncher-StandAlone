@@ -1,4 +1,4 @@
-package openlauncher;
+package openlauncher.util;
 
 public enum OperatingSystem {
 	LINUX("linux"), WINDOWS("windows"), OSX("osx");
@@ -7,10 +7,6 @@ public enum OperatingSystem {
 
 	private OperatingSystem(String name) {
 		this.name = name;
-	}
-
-	public String getName() {
-		return this.name;
 	}
 
 	public static OperatingSystem getOS() {
@@ -26,5 +22,9 @@ public enum OperatingSystem {
 
 	public static String getVersion() {
 		return System.getProperty("os.version");
+	}
+
+	public String getName() {
+		return this.name;
 	}
 }

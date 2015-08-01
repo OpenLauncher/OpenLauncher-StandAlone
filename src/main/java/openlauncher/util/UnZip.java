@@ -1,4 +1,4 @@
-package openlauncher;
+package openlauncher.util;
 
 import org.apache.commons.io.IOUtils;
 

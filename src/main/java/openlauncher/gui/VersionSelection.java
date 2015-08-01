@@ -3,8 +3,8 @@ package openlauncher.gui;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import openlauncher.ModPackInstaller;
-import openlauncher.ModPackInstance;
+import openlauncher.modPack.ModPackInstaller;
+import openlauncher.modPack.ModPackInstance;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,15 +12,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class VersionSelection extends JDialog {
-	private JPanel contentPane;
-	private JButton buttonOK;
-	public JList versionSelectionList;
-	public JLabel Lable;
-
 	public static DefaultListModel<String> versionList = new DefaultListModel<String>();
-
 	static ModPackInstaller installer;
 	static ModPackInstance instance;
+	public JList versionSelectionList;
+	public JLabel Lable;
+	private JPanel contentPane;
+	private JButton buttonOK;
 
 	public VersionSelection() {
 		$$$setupUI$$$();
@@ -35,6 +33,13 @@ public class VersionSelection extends JDialog {
 		});
 	}
 
+	public static void main(ModPackInstaller modPackInstaller) {
+		installer = modPackInstaller;
+		VersionSelection dialog = new VersionSelection();
+		dialog.pack();
+		dialog.setVisible(true);
+	}
+
 	private void onOK() {
 		dispose();
 		Thread thread = new Thread() {
@@ -43,13 +48,6 @@ public class VersionSelection extends JDialog {
 			}
 		};
 		thread.start();
-	}
-
-	public static void main(ModPackInstaller modPackInstaller) {
-		installer = modPackInstaller;
-		VersionSelection dialog = new VersionSelection();
-		dialog.pack();
-		dialog.setVisible(true);
 	}
 
 	private void createUIComponents() {

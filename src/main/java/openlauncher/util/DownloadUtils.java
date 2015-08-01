@@ -1,5 +1,6 @@
-package openlauncher;
+package openlauncher.util;
 
+import openlauncher.OpenLauncher;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.CountingOutputStream;
 
@@ -20,20 +21,7 @@ public class DownloadUtils {
 	public static JFrame frame;
 	public static JProgressBar progressBar;
 
-	private static class ProgressListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// e.getSource() gives you the object of DownloadCountingOutputStream
-			// because you set it in the overriden method, afterWrite().
-			long bytes = ((DownloadCountingOutputStream) e.getSource()).getByteCount();
-
-			//Launch.main.println("Downloaded bytes : " + (short)(bytes / 100000) + "MB");
-			progressBar.setValue((int) ((DownloadCountingOutputStream) e.getSource()).getByteCount());
-		}
-	}
-
-	public static void downloadFile(String url, File target, String name) throws IOException {
+	public static void downloadFile(String url, File target, String name, String md5) throws IOException {
 		frame = new JFrame("Openlauncher Downloader");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container content = frame.getContentPane();
@@ -72,7 +60,7 @@ public class DownloadUtils {
 			IOUtils.copy(is, dcount);
 
 		} catch (Exception e) {
-			Launch.main.println(e.getMessage());
+			e.printStackTrace();
 			frame.setVisible(false);
 		} finally {
 			if (os != null) {
@@ -84,7 +72,32 @@ public class DownloadUtils {
 				frame.setVisible(false);
 			}
 		}
+		if (!md5.isEmpty()) {
+			String fileMD = FileUtils.getMD5(target);
+			if (!md5.equals(fileMD)) {
+				OpenLauncher.logger.error("Invaild MD5!" + target.getAbsolutePath());
+				//TODO do something? try again?
+			} else {
+				//file fine
+			}
+		} else {
+			//Asume file file
+			OpenLauncher.logger.debug(target.getAbsolutePath() + " Does not have an md5. Assuming file intact!");
+		}
 		frame.setVisible(false);
+	}
+
+	private static class ProgressListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// e.getSource() gives you the object of DownloadCountingOutputStream
+			// because you set it in the overriden method, afterWrite().
+			long bytes = ((DownloadCountingOutputStream) e.getSource()).getByteCount();
+
+			//Launch.main.println("Downloaded bytes : " + (short)(bytes / 100000) + "MB");
+			progressBar.setValue((int) ((DownloadCountingOutputStream) e.getSource()).getByteCount());
+		}
 	}
 }
 

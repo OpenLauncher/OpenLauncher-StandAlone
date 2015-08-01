@@ -1,4 +1,7 @@
-package openlauncher;
+package openlauncher.modPack.type;
+
+import openlauncher.modPack.ModPackInstance;
+import openlauncher.modPack.PackType;
 
 public class LegacyType extends PackType {
 	@Override

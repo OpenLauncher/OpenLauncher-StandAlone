@@ -5,7 +5,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import openlauncher.*;
+import openlauncher.Main;
+import openlauncher.modPack.ModPackInstance;
+import openlauncher.modPack.PackType;
+import openlauncher.util.DownloadUtils;
+import openlauncher.util.UnZip;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -29,7 +33,7 @@ public class JsonType extends PackType {
 
 	@Override
 	public void checkMods(ModPackInstance modPackInstance) {
-		File workDir = new File(Launch.main.getHome().getAbsoluteFile() + "/instances/", modPackInstance.getInstanceName());
+		File workDir = new File(Main.openLauncher.getHome().getAbsoluteFile() + "/instances/", modPackInstance.getInstanceName());
 		if (!workDir.exists())
 			workDir.mkdirs();
 
@@ -37,7 +41,7 @@ public class JsonType extends PackType {
 		ArrayList<DownloadableMod> mods = new ArrayList<DownloadableMod>();
 
 		try {
-			DownloadUtils.downloadFile(modPackInstance.getTypeDownloadURL(), workDir, json.getName());
+			DownloadUtils.downloadFile(modPackInstance.getTypeDownloadURL(), workDir, json.getName(), "");//TODO MD5
 
 			JsonObject object = this.parser.parse(FileUtils.readFileToString(json)).getAsJsonObject();
 			Object modList = new HashMap<String, DownloadableMod>();
@@ -74,15 +78,15 @@ public class JsonType extends PackType {
 
 		for (DownloadableMod downloadableMod : mods) {
 			//TODO download all of the mods in one go, so the user can see 1 progress bar for all mods
-			if(downloadableMod.type.equals("mods")){
+			if (downloadableMod.type.equals("mods")) {
 				try {
-					DownloadUtils.downloadFile(downloadableMod.getUrl(), modDir, downloadableMod.getFile());
+					DownloadUtils.downloadFile(downloadableMod.getUrl(), modDir, downloadableMod.getFile(), downloadableMod.getMd5());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			} else if (downloadableMod.type.equals("config")){
+			} else if (downloadableMod.type.equals("config")) {
 				try {
-					DownloadUtils.downloadFile(downloadableMod.getUrl(), workDir, "configs.zip");
+					DownloadUtils.downloadFile(downloadableMod.getUrl(), workDir, "configs.zip", downloadableMod.getMd5());
 					UnZip.unZip(new File(workDir, "configs.zip"), workDir);
 				} catch (IOException e) {
 					e.printStackTrace();

@@ -7,9 +7,9 @@ import java.io.File;
  */
 public class ATLConversion {
 
-    public void convertATLPack(File input, File output){
-        //TODO figure out how to read xml files
-    }
+	public void convertATLPack(File input, File output) {
+		//TODO figure out how to read xml files
+	}
 
 
 }

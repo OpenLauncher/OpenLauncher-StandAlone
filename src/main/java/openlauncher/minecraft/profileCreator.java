@@ -1,4 +1,6 @@
-package openlauncher;
+package openlauncher.minecraft;
+
+import openlauncher.OpenLauncher;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -53,8 +55,6 @@ public class profileCreator {
 					JsonWriter writer = null;
 					writer = Json.createWriter(new FileWriter(json));
 					writer.writeObject(newProfiles);
-					System.out.println(newProfiles.toString());
-					System.out.println();
 					writer.close();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -82,7 +82,8 @@ public class profileCreator {
 
 
 			writer.close();
-			System.out.println("Created a new profile!");
+
+			OpenLauncher.logger.debug("Created a new profile");
 		}
 
 	}

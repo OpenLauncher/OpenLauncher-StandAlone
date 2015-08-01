@@ -1,4 +1,4 @@
-package openlauncher;
+package openlauncher.minecraft;
 
 import cpw.mods.fml.installer.ClientInstall;
 
